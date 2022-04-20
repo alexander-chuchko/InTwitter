@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:views="clr-namespace:InTwitter.Views"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       NavigationPage.HasNavigationBar="False"
+                       xmlns:controlCamera="clr-namespace:InTwitter.Controls.Stories" 
+                       xmlns:viewmodels="clr-namespace:InTwitter.ViewModels"
+                       x:DataType="viewmodels:CameraPageViewModel"
+                       x:Class="InTwitter.Views.CameraPage">
+    
+    <ContentPage.Content>
+
+        <Grid RowDefinitions="*"
+              BackgroundColor="Transparent">
+
+            <controlCamera:CameraPreview Grid.Row="0"
+                                         CameraOptions="{Binding CameraMode}"
+                                         CaptureMode="{Binding CaptureMode}"
+                                         OpenShutter="{Binding OpenShutter}"
+                                         PressedButtonCommand ="{Binding PressedButtonCommand}"
+                                         TapFlipCameraOrPostCommand ="{Binding TapFlipCameraOrPostCommand}"
+                                         TapCloseCommand="{Binding TapCloseCommand}"
+                                         PageStatus="{Binding PageStatus}"
+                                         ImageData="{Binding ImageData}"
+                                         PathImageSource="{Binding PathImageSource}"
+                                         TapMediaStoryCommand="{Binding AddImageTapCommand}"
+                                         TimerVideo="{Binding Timer}"
+                                         IsRecording="{Binding IsRecording}"
+                                         MediaElementMode="{Binding MediaElementMode}"
+                                         VideoSource="{Binding VideoSource}"
+                                         IsVisible="true"/>
+        </Grid>
+        
+    </ContentPage.Content>
+    
+</views:BaseContentPage>

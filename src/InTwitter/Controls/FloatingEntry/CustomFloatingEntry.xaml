@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:InTwitter.Controls.FloatingEntry"
+             x:Class="InTwitter.Controls.FloatingEntry.CustomFloatingEntry"
+             x:Name="cfe">
+
+    <StackLayout>
+
+        <Grid RowDefinitions="0.2*, *, Auto"
+          Padding="0">
+
+            <Grid ColumnDefinitions="*, Auto"
+              Grid.Row="1">
+
+                <Grid.GestureRecognizers>
+
+                    <TapGestureRecognizer Tapped="Label_Tapped"/>
+                    
+                </Grid.GestureRecognizers>
+                
+                <!-- ENTRY -->
+                <control:FloatEntry x:Name="entry"
+                                    Grid.Column="0"
+                                    Text="{Binding EntryText, Source={x:Reference cfe}}"
+                                    TextColor="{Binding EntryTextColor, Source={x:Reference cfe}}"
+                                    FontSize="{Binding EntryFontSize, Source={x:Reference cfe}}"
+                                    IsPassword ="{Binding IsPassword, Source={x:Reference cfe}}"
+                                    FontFamily="{Binding EntryFontFamily, Source={x:Reference cfe}}"
+                                    Unfocused="Entry_Unfocused"
+                                    Focused="Entry_Focused"/>
+
+                <!-- LABEL / PLACEHOLDER-->
+                <Label x:Name="label"
+                       Grid.Column="0"
+                       VerticalOptions="Center"
+                       Text="{Binding LabelText, Source={x:Reference cfe}}"
+                       FontSize="{Binding LabelRealFontSize, Source={x:Reference cfe}}"
+                       FontFamily="{Binding LabelFontFamily, Source={x:Reference cfe}}">
+
+                    <Label.GestureRecognizers>
+
+                        <TapGestureRecognizer Tapped="Label_Tapped"/>
+
+                    </Label.GestureRecognizers>
+
+                </Label>
+
+                <StackLayout Grid.Column="1"
+                         Orientation="Horizontal"
+                         HorizontalOptions="EndAndExpand"
+                         Spacing="20"
+                         Margin="0,0,20,0">
+                    
+                    <!-- EYE IMAGE -->
+                    <Image x:Name="eyeImage"
+                           Source="ic_eye_blue.png"
+                           Scale="1.2"
+                           IsVisible="false">
+
+                        <Image.GestureRecognizers>
+
+                            <TapGestureRecognizer Tapped="EyeImage_Tapped"/>
+                            
+                        </Image.GestureRecognizers>
+                        
+                    </Image>
+
+                    <!-- CLEAR IMAGE -->
+                    <Image x:Name="clearImage"
+                           Source="ic_clear.png"
+                           Scale="1.2"
+                           IsVisible="false">
+
+                        <Image.GestureRecognizers>
+
+                            <TapGestureRecognizer Tapped="ClearImage_Tapped"/>
+                            
+                        </Image.GestureRecognizers>
+                        
+                    </Image>
+
+                </StackLayout>
+
+            </Grid>
+            
+            <!-- BOXVIEW -->
+            <BoxView Grid.Row="2"
+                     HeightRequest="1"
+                     VerticalOptions="Start"
+                     Color="{Binding BoxViewColor, Source={x:Reference cfe}}"/>
+
+        </Grid>
+        
+        <!-- LABEL ERROR -->
+        <Label x:Name="errorLabel"
+               Text="{Binding ErrorText, Source={x:Reference cfe}}"
+               FontSize="{Binding ErrorFontSize, Source={x:Reference cfe}}"
+               FontFamily="{Binding ErrorFontFamily, Source={x:Reference cfe}}"
+               TextColor="{Binding ErrorTextColor, Source={x:Reference cfe}}"/>
+
+    </StackLayout>
+    
+</ContentView>

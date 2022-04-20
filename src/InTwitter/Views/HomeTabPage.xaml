@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseTabPage xmlns:views="clr-namespace:InTwitter.Views" 
+                   xmlns="http://xamarin.com/schemas/2014/forms"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:prism="http://prismlibrary.com"
+                   xmlns:controls="clr-namespace:InTwitter.Controls"
+                   xmlns:controlStoriesPanel="clr-namespace:InTwitter.Controls.Stories"
+                   xmlns:state="clr-namespace:InTwitter.Controls.StateContainer" 
+                   xmlns:viewmodels="clr-namespace:InTwitter.ViewModels"
+                   xmlns:entities="clr-namespace:InTwitter.Models.Tweet"
+                   xmlns:templates="clr-namespace:InTwitter.Views.Templates"
+                   prism:ViewModelLocator.AutowireViewModel="True"
+                   x:Class="InTwitter.Views.HomeTabPage"
+                   NavigationPage.HasNavigationBar="False"
+                   x:Name="page"
+                   Style="{DynamicResource pageStyle}"
+                   x:DataType="viewmodels:FeedViewModel">
+
+    <Grid RowDefinitions="*">
+
+        <!--FEED-->
+        
+        <RefreshView Grid.Column="0"
+                     Command="{Binding RefreshCommand}" 
+                     RefreshColor="{DynamicResource PrimaryColor}"
+                     IsRefreshing="{Binding IsRefreshing}">
+
+            
+            <controls:FeedView  ItemSource="{Binding Tweets}"
+                                OnFinishedScrollCommand="{Binding FinishedScrollCommand}"
+                                ScrollPosition="{Binding ScrollPosition}">
+
+
+                <controls:FeedView.DataTemplate>
+                    
+                    <DataTemplate x:DataType="entities:TweetViewModel">
+                        
+                        <templates:TweetTemplate HashtagTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.HashtagTapped}"
+                                                 TweetTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.TweetTapped}"
+                                                 UserTappedCommand ="{Binding Source={x:Reference page}, Path=BindingContext.UserTapped}" 
+                                                 MediaTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.MediaTapped}"
+                                                 MoreTextTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.MoreTextTapped}"
+                                                 LikeTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.LikeTappedCommand}"
+                                                 MarkTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.MarkTappedCommand}"
+                                                 TweetDestiny="Hashtags"/>
+                    
+                    </DataTemplate>
+                    
+                </controls:FeedView.DataTemplate>
+
+                <!--INDEND FOR NAVBAR-->
+                
+                <controls:FeedView.Header>
+                    
+                    <StackLayout HeightRequest="160"/>
+                    
+                </controls:FeedView.Header>
+
+                <controls:FeedView.Footer>
+                    
+                    <StackLayout HeightRequest="200" VerticalOptions="CenterAndExpand">
+
+                        <state:StateContainer State="{Binding FeedState}" VerticalOptions="FillAndExpand">
+                            
+                            <state:StateContainer.Conditions>
+                                <state:StateCondition Is="FeedLoading">
+                                    <ActivityIndicator IsRunning="True" Color="{DynamicResource PrimaryColor}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </state:StateCondition>
+
+                                <state:StateCondition Is="NoResults">
+                                    
+                                    <Label Text="{Binding TextResources[NoResults]}"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           FontSize="{DynamicResource AccentFontSize}"
+                                           FontFamily="Ubuntu400"
+                                           TextColor="{DynamicResource Black}"/>
+                                    
+                                </state:StateCondition>
+                                
+                            </state:StateContainer.Conditions>
+                            
+                        </state:StateContainer>
+
+                    </StackLayout>
+                    
+                </controls:FeedView.Footer>
+
+            </controls:FeedView>
+        </RefreshView>
+
+        <!--NEW POST BUTTON-->
+        
+        <controls:AddButton VerticalOptions="End"
+                            HorizontalOptions="End"
+                            Margin="0,0,22,22"
+                            TranslationY="1000"
+                            ScrollState="{Binding ScrollPosition}"
+                            Command="{Binding AddPostCommand}"/>
+
+        <!--NAVBAR-->
+
+        <StackLayout Spacing="0"
+                     VerticalOptions="Start">
+            
+            <controls:MainNavBar BackgroundColor="{DynamicResource White}"
+                                 Title="{Binding TextResources[HomeTabTitle]}"
+                                 ScrollState="{Binding ScrollPosition}"
+                                 LeftImage="{Binding CurrentProfileIcon}"
+                                 LeftImageTapCommand="{Binding Source={x:Reference page}, Path=BindingContext.UserTapped}"
+                                 RightImageTapCommand="{Binding AddPostCommand}"/>
+
+            <controlStoriesPanel:StoriesPanel BackgroundColor="{DynamicResource White}"
+                                              ScrollState="{Binding ScrollPosition}"
+                                              SelectedUserStory="{Binding SelectedUserStory}"
+                                              UserStoriesList="{Binding UserStoriesVM}"
+                                              TapUserStoryCommand="{Binding TapUserStroryCommand}"/>
+
+        </StackLayout>
+        
+        <!--SAFE AREA LAYOUT FOR NAVBAR-->
+        
+        <StackLayout HeightRequest="160"
+                     TranslationY="-160"
+                     BackgroundColor="#ffff"
+                     VerticalOptions="Start"/>
+
+    </Grid>
+
+</views:BaseTabPage>

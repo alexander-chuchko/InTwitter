@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage  xmlns:views="clr-namespace:InTwitter.Views"
+                        xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:prism="http://prismlibrary.com"
+                        prism:ViewModelLocator.AutowireViewModel="True"
+                        xmlns:controls="clr-namespace:InTwitter.Controls" 
+                        xmlns:statecontainer="clr-namespace:InTwitter.Controls.StateContainer"
+                        x:Class="InTwitter.Views.TweetPage"
+                        x:Name="page"
+                        NavigationPage.HasNavigationBar="False"
+                        Style="{DynamicResource pageStyle}">
+    <StackLayout  BindingContext="{Binding Tweet}" VerticalOptions="FillAndExpand">
+
+        <statecontainer:StateContainer State="{Binding Path=BindingContext.IsLoaded, Source={Reference page}}" 
+                                       HorizontalOptions="FillAndExpand"
+                                       VerticalOptions="FillAndExpand">
+            <statecontainer:StateContainer.Conditions>
+                <statecontainer:StateCondition Is="True">
+                    <StackLayout>
+                        <!--NAVBAR-->
+                        <StackLayout Orientation="Horizontal" 
+                                     Padding="20,10,15,10"
+                                     HorizontalOptions="FillAndExpand">
+                            <ImageButton Source="ic_left_gray.png"
+                                         Command="{prism:GoBack}"
+                                         HorizontalOptions="Start"
+                                         VerticalOptions="Center"
+                                         HeightRequest="20"
+                                         WidthRequest="20"
+                                         Scale="1.2"
+                                         BackgroundColor="{DynamicResource White}"/>
+
+                            <Label Text="{Binding Path=User.Name}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="CenterAndExpand"
+                                   FontSize="{DynamicResource AccentFontSize}"
+                                   FontFamily="Ubuntu400"
+                                   TextColor="{DynamicResource Black}"/>
+
+                            <Frame  WidthRequest="30"
+                                    HeightRequest="30" 
+                                    CornerRadius="15"
+                                    Padding="0"
+                                    BackgroundColor="{DynamicResource White}"
+                                    HasShadow="False"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="End"
+                                    IsClippedToBounds="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding UserIconTapped}"/>
+                                </Frame.GestureRecognizers>
+                                <Image BackgroundColor="{DynamicResource White}" Source="{Binding Path=User.IconSource}" Aspect="AspectFill"/>
+                            </Frame>
+                        </StackLayout>
+
+                        <!--SEPARATOR-->
+                        <BoxView HeightRequest="1"
+                 HorizontalOptions="FillAndExpand" 
+                 Color="{DynamicResource LightGray}"
+                 Margin="0,0,0,12"/>
+
+                        <StackLayout Padding="{DynamicResource HorizontalIndent}" Spacing="0">
+
+                            <!--TWEET TEXT-->
+                            <controls:DistributedLabel LineHeight="1.2"
+                                           TextStyle="{DynamicResource tweetTextStyle}"
+                                           Text="{Binding Text}"
+                                           Wrap="Wrap" 
+                                           AlignItems="Start"
+                                           AlignContent="Start"
+                                           JustifyContent="Start"
+                                           Direction="Row" 
+                                           VerticalOptions="FillAndExpand" 
+                                           HorizontalOptions="FillAndExpand">
+                            </controls:DistributedLabel>
+
+                            <!--MEDIA CONTAINER-->
+                            <statecontainer:StateContainer State="{Binding HasMedia}" HorizontalOptions="FillAndExpand">
+                                <statecontainer:StateCondition Is="True">
+                                    <StackLayout>
+                                        <controls:AutoGrid ItemsSource="{Binding MediaSources}" ColumnSpacing="5" RowSpacing="5" Padding="0,12,0,0">
+                                            <controls:AutoGrid.Template>
+                                                <DataTemplate>
+                                                    <controls:MediaContainer Type="{Binding MediaType}"
+                                                                 Source="{Binding MediaSource}"
+                                                                 AllowVideo="True">
+                                                        <controls:MediaContainer.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding Source={x:Reference page}, Path=BindingContext.MediaTappedCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                                        </controls:MediaContainer.GestureRecognizers>
+                                                    </controls:MediaContainer>
+                                                </DataTemplate>
+                                            </controls:AutoGrid.Template>
+                                        </controls:AutoGrid>
+                                    </StackLayout>
+                                </statecontainer:StateCondition>
+                            </statecontainer:StateContainer>
+
+                            <!--FOOTER-->
+                            <StackLayout Style="{DynamicResource tweetFooterStyle}">
+
+                                <!--CREATION DATE-->
+                                <Label Text="{Binding Path=CreationDate}"
+                                       HorizontalOptions="StartAndExpand" 
+                                       VerticalOptions="Center"
+                                       Style="{DynamicResource tweetCreationTimeStyle}"/>
+
+                                <!--LIKES-->
+                                <controls:ClickableContentView Command="{Binding Path=BindingContext.LikeTappedCommand, Source={Reference page}}"
+                                                               CommandParameter="{Binding .}"
+                                                               SelectedScale="1.1" 
+                                                               Padding="5">
+
+                                    <controls:LikeControl IsLiked="{Binding IsUserLiked}"
+                                                          LikesAmount="{Binding LikesAmount}"
+                                                          NormalStyle="{DynamicResource tweetLikeStyle}"
+                                                          ActivatedStyle="{DynamicResource tweetLikeActivateStyle}"
+                                                          CheckedImageSource="ic_like_blue.png"
+                                                          UncheckedImageSource="ic_like_gray.png"/>
+                                </controls:ClickableContentView>
+
+                                <!--MARK-->
+                                <controls:ClickableContentView Command="{Binding Path=BindingContext.MarkTappedCommand, Source={Reference page}}"
+                                                               CommandParameter="{Binding .}"
+                                                               SelectedScale="1.1" 
+                                                               Padding="5">
+
+                                    <controls:ImageCheckBox BackgroundColor="{DynamicResource White}"
+                                                        VerticalOptions="Center"
+                                                        HorizontalOptions="End" 
+                                                        WidthRequest="20"
+                                                        HeightRequest="20"
+                                                        Scale="1.2"
+                                                        CheckedImageSource="ic_bookmarks_blue.png"
+                                                        UncheckedImageSource="ic_bookmarks_gray.png"
+                                                        IsChecked="{Binding IsUserMarked, Mode=TwoWay}"/>
+                                </controls:ClickableContentView>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </statecontainer:StateCondition>
+
+                <statecontainer:StateCondition IsNot="True">
+                    <StackLayout HorizontalOptions="FillAndExpand" 
+                                 VerticalOptions="FillAndExpand">
+                        <ActivityIndicator BackgroundColor="{DynamicResource PrimaryColor}"/>
+                    </StackLayout>
+                </statecontainer:StateCondition>
+            </statecontainer:StateContainer.Conditions>
+        </statecontainer:StateContainer>
+
+
+
+    </StackLayout>
+</views:BaseContentPage>

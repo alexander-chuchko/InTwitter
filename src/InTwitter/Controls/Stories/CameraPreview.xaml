@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:constants="clr-namespace:InTwitter"
+             xmlns:control ="clr-namespace:InTwitter.Controls.Stories"
+             xmlns:views="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
+             x:Class="InTwitter.Controls.Stories.CameraPreview"
+             x:Name="cameraAndMediaPreview">
+    
+    <ContentView.Content>
+
+        <Grid RowDefinitions="*">
+
+            <Grid Grid.Row="0"
+                  x:Name="gridContainer">
+                
+                <!-- Preview Camera -->
+                
+                <views:CameraView x:Name="cameraPreview"
+                                  BindingContext="{x:Reference cameraAndMediaPreview}"
+                                  VerticalOptions="FillAndExpand"
+                                  HorizontalOptions="FillAndExpand"
+                                  MediaCaptured="OnCameraViewMediaCaptured"
+                                  MediaCaptureFailed="OnCameraViewMediaCaptureFailed"
+                                  FlashMode="Off"
+                                  CameraOptions="{Binding CameraOptions}"
+                                  CaptureMode="{Binding CaptureMode}">
+
+                    <views:CameraView.Triggers>
+                        
+                        <DataTrigger TargetType="views:CameraView"
+                                     Binding="{Binding PageStatus}" Value="True">
+                            
+                            <Setter Property="IsVisible" Value="False"/>
+                            
+                        </DataTrigger>
+
+                    </views:CameraView.Triggers>
+
+                </views:CameraView>
+
+                <!-- Viewing Video -->
+
+                <views:MediaElement x:Name="previewVideo"
+                                     BindingContext="{x:Reference cameraAndMediaPreview}"
+                                     AutoPlay="true"
+                                     BackgroundColor="{DynamicResource Black}"
+                                     Aspect="AspectFill"
+                                     ShowsPlaybackControls ="False"
+                                     IsVisible="false">
+
+                        <views:MediaElement.Triggers>
+
+                            <MultiTrigger TargetType="views:MediaElement">
+
+                                <MultiTrigger.Conditions>
+
+                                    <BindingCondition Binding="{Binding PageStatus}" Value="True"/>
+
+                                    <BindingCondition Binding="{Binding CaptureMode}"
+                                                  Value="{x:Static views:CameraCaptureMode.Video}"/>
+
+                                </MultiTrigger.Conditions>
+
+                                <Setter Property="IsVisible" Value="True"/>
+
+                            </MultiTrigger>
+
+                        </views:MediaElement.Triggers>
+
+                    </views:MediaElement>
+
+                <!--Viewing Photos-->
+                
+                <Image x:Name="previewPicture"
+                       BindingContext="{x:Reference cameraAndMediaPreview}"
+                       VerticalOptions="FillAndExpand"
+                       HorizontalOptions="FillAndExpand"
+                       Aspect="AspectFill"
+                       IsVisible="false">
+                    
+                    <Image.Triggers>
+
+                        <MultiTrigger TargetType="Image">
+
+                            <MultiTrigger.Conditions>
+
+                                <BindingCondition Binding="{Binding PageStatus}"
+                                                  Value="True"/>
+
+                                <BindingCondition Binding="{Binding CaptureMode}"
+                                                  Value="{x:Static views:CameraCaptureMode.Photo}"/>
+
+                            </MultiTrigger.Conditions>
+
+                            <Setter Property="IsVisible" Value="True"/>
+
+                        </MultiTrigger>
+
+
+                    </Image.Triggers>
+                    
+                </Image>
+            
+            </Grid>
+            
+            <!--Bottom navbar-->
+            
+            <StackLayout Orientation="Horizontal"
+                         HeightRequest="65"
+                         VerticalOptions="End"
+                         Padding="15,5"
+                         BackgroundColor="{DynamicResource Black}"
+                         Spacing="15">
+
+                <ImageButton BindingContext="{x:Reference cameraAndMediaPreview}"
+                             x:Name="imageCamera"
+                             Source="ic_camera_story.png"
+                             VerticalOptions="Center" 
+                             HorizontalOptions="Start"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             BackgroundColor="Transparent"
+                             Clicked="ImageCamera_Tapped"
+                             IsVisible="false">
+                    
+                    <ImageButton.Triggers>
+                        
+                        <DataTrigger TargetType="ImageButton" Binding="{Binding PageStatus}" Value="True">
+                            
+                            <Setter Property="IsVisible" Value="True"/>
+                            
+                        </DataTrigger>
+                        
+                    </ImageButton.Triggers>
+                    
+                </ImageButton>
+
+                <ImageButton BindingContext="{x:Reference cameraAndMediaPreview}"
+                             Source="ic_media_story.png"
+                             BackgroundColor="Transparent"
+                             x:Name="mediaStory"
+                             VerticalOptions="Center" 
+                             HorizontalOptions="Start"
+                             HeightRequest="30"
+                             WidthRequest="30"/>
+
+                <ImageButton BindingContext="{x:Reference cameraAndMediaPreview}"
+                             x:Name="imageChangeCameraMode"
+                             VerticalOptions="Center"
+                             HorizontalOptions="EndAndExpand"
+                             BackgroundColor="Transparent"
+                             Source="ic_flip_the_camera_story.png"
+                             WidthRequest="40"
+                             HeightRequest="40"
+                             Command="{Binding TapFlipCameraOrPostCommand}"
+                             CommandParameter="{x:Static constants:Constants.TAP_FLIP_CAMERA}">
+                    
+                    <ImageButton.Triggers>
+                        
+                        <DataTrigger TargetType="ImageButton"
+                                     Binding="{Binding PageStatus}" Value="True">
+                            
+                            <Setter Property="IsVisible" Value="False"/>
+                            
+                        </DataTrigger>
+                        
+                    </ImageButton.Triggers>
+                    
+                </ImageButton>
+
+                <Button BindingContext="{x:Reference cameraAndMediaPreview}"
+                        x:Name="imageButtonPost"
+                        Text="Post"
+                        Padding="0"
+                        Margin="0"
+                        TextTransform="None"
+                        TextColor="{DynamicResource White}"
+                        BackgroundColor="{DynamicResource PrimaryColor}"
+                        HeightRequest="40"
+                        FontSize="15"
+                        CornerRadius="20"
+                        HorizontalOptions="EndAndExpand"
+                        VerticalOptions="Center"
+                        WidthRequest="85"
+                        IsVisible="False"
+                        Command="{Binding TapFlipCameraOrPostCommand}"
+                        CommandParameter="{x:Static constants:Constants.TAP_POST}">
+                    
+                    <Button.Triggers>
+                        
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding PageStatus}"
+                                     Value="True">
+                            
+                            <Setter Property="IsVisible" Value="True"/>
+                            
+                        </DataTrigger>
+                        
+                    </Button.Triggers>
+                    
+                </Button>
+                
+            </StackLayout>
+
+            <!--Top Navbar-->
+
+            <StackLayout BackgroundColor="{DynamicResource Black}"
+                         VerticalOptions="Start"
+                         Orientation="Horizontal"
+                         Opacity="0.6"
+                         Padding="15,5"
+                         Spacing="15"
+                         HeightRequest="65">
+
+                <Label x:Name="timerVideo"
+                       FontSize="Medium"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Start"
+                       TextColor="{DynamicResource White}"
+                       IsVisible="False"
+                       BackgroundColor="Transparent">
+
+                    <Label.Triggers>
+
+                        <MultiTrigger TargetType="Label">
+
+                            <MultiTrigger.Conditions>
+
+                                <BindingCondition Binding="{Binding CaptureMode}"
+                                                  Value="{x:Static views:CameraCaptureMode.Video}"/>
+
+                                <BindingCondition Binding="{Binding IsRecording}"
+                                                  Value="True"/>
+
+                                <BindingCondition Binding="{Binding PageStatus}"
+                                                  Value="False"/>
+
+
+                            </MultiTrigger.Conditions>
+
+                            <Setter Property="IsVisible" Value="True"/>
+
+                        </MultiTrigger>
+
+                    </Label.Triggers>
+
+                </Label>
+
+                <ImageButton BindingContext="{x:Reference cameraAndMediaPreview}"
+                             x:Name="imageClose"
+                             VerticalOptions="Center"
+                             HorizontalOptions="EndAndExpand"
+                             Source="ic_close_white_story.png"
+                             HeightRequest="30"
+                             WidthRequest="30"
+                             BackgroundColor="Transparent"
+                             Command="{Binding TapCloseCommand}"/>
+
+            </StackLayout>
+
+            <!--Button For Action Shutter-->
+
+            <control:InteractiveRing x:Name="interactiveRing"
+                                     Grid.Row="0"
+                                     WidthRequest="80"
+                                     HeightRequest="80"
+                                     TranslationY="-100"
+                                     VerticalOptions="End"
+                                     HorizontalOptions="Center">
+
+                <control:InteractiveRing.Triggers>
+
+                    <DataTrigger TargetType="control:InteractiveRing"
+                                 Binding="{Binding PageStatus}"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="False"/>
+
+                    </DataTrigger>
+
+                </control:InteractiveRing.Triggers>
+
+            </control:InteractiveRing>
+
+            <Button Grid.Row="0"
+                    BindingContext="{x:Reference cameraAndMediaPreview}"
+                    x:Name="buttonCamera"
+                    TranslationY="-111.5"
+                    HeightRequest="58"
+                    WidthRequest="58"   
+                    CornerRadius="30"
+                    BackgroundColor="{DynamicResource White}"
+                    VerticalOptions="End"
+                    HorizontalOptions="Center"
+                    xct:TouchEffect.Command= "{Binding PressedButtonCommand}"
+                    xct:TouchEffect.CommandParameter="{x:Static constants:Constants.PRESSED_BUTTON}"
+                    xct:TouchEffect.LongPressCommand="{Binding PressedButtonCommand}"
+                    xct:TouchEffect.LongPressDuration="500"
+                    xct:TouchEffect.LongPressCommandParameter="{x:Static constants:Constants.LONG_PRESSED_BUTTON}">
+                
+                <Button.Effects>
+
+                    <xct:TouchEffect StateChanged="OnMainButtonTouchStateChanged"/>
+                    
+                </Button.Effects>
+
+                <Button.Triggers>
+
+                    <DataTrigger TargetType="Button" Binding="{Binding PageStatus}" Value="True">
+
+                        <Setter Property="IsVisible" Value="False"/>
+
+                    </DataTrigger>
+
+                </Button.Triggers>
+                
+            </Button>
+
+        </Grid>
+        
+    </ContentView.Content>
+    
+</ContentView>

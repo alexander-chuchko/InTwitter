@@ -1,0 +1,518 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage xmlns:views="clr-namespace:InTwitter.Views"
+                       xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:prism="http://prismlibrary.com" 
+                       xmlns:controls="clr-namespace:InTwitter.Controls"
+                       xmlns:state="clr-namespace:InTwitter.Controls.StateContainer" 
+                       xmlns:templates="clr-namespace:InTwitter.Views.Templates" 
+                       xmlns:viewmodels="clr-namespace:InTwitter.ViewModels"
+                       xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                       prism:ViewModelLocator.AutowireViewModel="True"
+                       x:Class="InTwitter.Views.ProfilePage"
+                       x:Name="page"
+                       x:DataType="viewmodels:ProfilePageViewModel"
+                       NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Content>
+
+        <Grid RowDefinitions="Auto, *"
+              RowSpacing="0">
+
+            <StackLayout Grid.Row="0">
+
+                <!--PROFILE CUSTOMIZATION-->
+                <Grid RowDefinitions="*"
+                      HeightRequest="217">
+
+                    <!--PROFILE WALLPAPER-->
+                    <Grid RowDefinitions="180, *">
+
+                        <Grid RowDefinitions="*">
+
+                            <StackLayout BackgroundColor="{DynamicResource PrimaryColor}"
+                                         Opacity="0.3"/>
+
+                            <ActivityIndicator IsRunning="True" 
+                                               Color="{DynamicResource PrimaryColor}"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               IsVisible="{Binding IsWallpaperLoaderVisible}"/>
+
+                            <ff:CachedImage Source="{Binding WallPaper}"
+                                            HorizontalOptions="FillAndExpand"
+                                            Aspect="AspectFill"
+                                            FinishCommand="{Binding LoadedWallpaperCommand}"/>
+
+                            <!--BACK BUTTON-->
+                            <controls:ClickableContentView Command="{Binding GoBackTapCommand}"
+                                                           WidthRequest="30"
+                                                           HeightRequest="30"
+                                                           HorizontalOptions="Start"
+                                                           VerticalOptions="Start"
+                                                           Margin="13">
+
+                                <controls:ClickableContentView.Content>
+
+                                    <Frame CornerRadius="15"
+                                           BackgroundColor="Transparent"
+                                           Padding="0"
+                                           HasShadow="False"
+                                           IsClippedToBounds="True">
+
+                                        <Grid RowDefinitions="*">
+
+                                            <BoxView BackgroundColor="{DynamicResource Black}"
+                                                     Opacity="0.6"
+                                                     CornerRadius="15"/>
+
+                                            <Image BackgroundColor="Transparent"
+                                                   Source="ic_left_white.png"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"/>
+
+                                        </Grid>
+
+                                    </Frame>
+
+                                </controls:ClickableContentView.Content>
+
+                            </controls:ClickableContentView>
+
+                            <!--DETAIL BUTTON-->
+                            <controls:ClickableContentView WidthRequest="30"
+                                                           HeightRequest="30"
+                                                           HorizontalOptions="End"
+                                                           VerticalOptions="Start"
+                                                           Margin="13"
+                                                           Command="{Binding OpenDetailTapCommand}">
+
+                                <controls:ClickableContentView.Content>
+
+                                    <Frame CornerRadius="15"
+                                           BackgroundColor="Transparent"
+                                           Padding="0"
+                                           HasShadow="False"
+                                           IsClippedToBounds="True">
+
+                                        <Grid RowDefinitions="*">
+
+                                            <BoxView BackgroundColor="{DynamicResource Black}"
+                                                     Opacity="0.6"
+                                                     CornerRadius="15"/>
+
+                                            <Image BackgroundColor="Transparent"
+                                                   Source="ic_hidden_menu_white.png"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"/>
+
+                                        </Grid>
+
+                                    </Frame>
+
+                                </controls:ClickableContentView.Content>
+
+                            </controls:ClickableContentView>
+
+                        </Grid>
+
+                    </Grid>
+
+                    <!--PROFILE AVATAR-->
+
+                    <Frame WidthRequest="70"
+                           HeightRequest="70"
+                           CornerRadius="35"
+                           Padding="0"
+                           Margin="12,5"
+                           BackgroundColor="{Binding ColorStories}"
+                           HasShadow="False"
+                           IsClippedToBounds="True"
+                           HorizontalOptions="Start"
+                           VerticalOptions="End">
+
+                        <Frame WidthRequest="64"
+                                HeightRequest="64"
+                                CornerRadius="32"
+                                BackgroundColor="{DynamicResource White}"
+                                Padding="0"
+                                Margin="3"
+                                HasShadow="False"
+                                IsClippedToBounds="True">
+
+                            <Grid RowDefinitions="*">
+
+                                <ActivityIndicator IsRunning="True" 
+                                                    Color="{DynamicResource PrimaryColor}"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center"
+                                                    IsVisible="{Binding IsIconLoaderVisible}"/>
+
+                                <ff:CachedImage BackgroundColor="Transparent"
+                                            Source="{Binding Icon}"
+                                            Aspect="AspectFill"
+                                            FinishCommand="{Binding LoadedIconCommand}"/>
+
+                                <ImageButton BackgroundColor="Transparent"
+                                                CornerRadius="32"
+                                                BorderWidth="3"
+                                                BorderColor="{DynamicResource White}"
+                                                Padding="17"
+                                                IsEnabled="False"
+                                                Command="{Binding TapUserStroryCommand}"
+                                                CommandParameter="{Binding .}"/>
+
+                            </Grid>
+
+                        </Frame>
+                    </Frame>
+
+                    <Frame WidthRequest="30"
+                           HeightRequest="30"
+                           CornerRadius="15"
+                           Padding="0"
+                           HasShadow="False"
+                           IsClippedToBounds="True"
+                           TranslationX="56"
+                           TranslationY="-2"                          
+                           VerticalOptions="End" 
+                           HorizontalOptions="Start"
+                           BackgroundColor="#FCFDFE"
+                           IsVisible="{Binding IsVisableIconPlus}">
+
+                        <Image x:Name="imagePlus"
+                               Margin="2"
+                               Source="ic_add_blue_small.png"
+                               Aspect="AspectFill"/>
+
+                    </Frame>
+                    
+
+                        <!--CHANGE PROFILE BUTTON-->
+                    <Button WidthRequest="170"
+                            HeightRequest="28"
+                            TextTransform="None"
+                            FontFamily="Ubuntu500"
+                            FontSize="{DynamicResource NormalFontSize}"
+                            TextColor="{DynamicResource DarkGray}"
+                            Text="{Binding TextResources[ChangeProfile]}"
+                            Padding="0"
+                            CornerRadius="14"
+                            BackgroundColor="Transparent"
+                            BorderWidth="1"
+                            BorderColor="{DynamicResource DarkGray}"
+                            HorizontalOptions="End"
+                            VerticalOptions="End"
+                            Margin="15, 0"
+                            Command="{Binding ChangeProfileTapCommand}"
+                            IsVisible="{Binding IsChangeProfileButtonVisible}"/>
+
+                    <!--PROFILE IN BLACKLIST-->
+                    <Frame WidthRequest="185"
+                           HeightRequest="28"
+                           Padding="0"
+                           CornerRadius="14"
+                           BackgroundColor="Transparent"
+                           BorderColor="{DynamicResource ErrorColor}"
+                           HorizontalOptions="End"
+                           VerticalOptions="End"
+                           Margin="15, 0"
+                           IsVisible="{Binding IsProfileInBlacklistVisible}"
+                           HasShadow="False">
+
+                        <Label FontFamily="Ubuntu500"
+                               FontSize="{DynamicResource NormalFontSize}"
+                               TextColor="{DynamicResource ErrorColor}"
+                               Text="{Binding TextResources[ProfileInBlackList]}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                    </Frame>
+
+                    <!--MUTED-->
+                    <Frame WidthRequest="110"
+                           HeightRequest="28"
+                           Padding="0"
+                           CornerRadius="14"
+                           BackgroundColor="Transparent"
+                           BorderColor="{DynamicResource DarkGray}"
+                           HorizontalOptions="End"
+                           VerticalOptions="End"
+                           Margin="15, 0"
+                           IsVisible="{Binding IsMutedVisible}"
+                           HasShadow="False">
+
+                        <Label FontFamily="Ubuntu500"
+                               FontSize="{DynamicResource NormalFontSize}"
+                               TextColor="{DynamicResource DarkGray}"
+                               Text="{Binding TextResources[Muted]}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                    </Frame>
+
+                </Grid>
+
+                <!--PROFILE INFO-->
+                <StackLayout Padding="15, 0"
+                             Spacing="3">
+
+                    <!--NAME-->
+                    <Label FontFamily="Ubuntu700" 
+                           FontSize="{DynamicResource AccentFontSize}" 
+                           TextColor="{DynamicResource Black}" 
+                           Text="{Binding Name}"/>
+
+                    <!--EMAIL-->
+                    <Label FontFamily="Ubuntu400" 
+                           FontSize="{DynamicResource SmallFontSize}" 
+                           TextColor="{DynamicResource DarkGray}" 
+                           Text="{Binding Email}"/>
+
+                </StackLayout>
+
+                <!--TABBEDBAR-->
+                <controls:TabbedBar TabFont="Ubuntu400"
+                                    TabFontSize="{DynamicResource SmallFontSize}"
+                                    FirstTabColor="{DynamicResource PrimaryColor}"
+                                    FirstTabText="{Binding TextResources[Posts]}"
+                                    SecondTabText="{Binding TextResources[Likes]}"
+                                    SecondTabColor="{DynamicResource DarkGray}"
+                                    SelectedTabColor="{DynamicResource PrimaryColor}"
+                                    UnselectedTabColor="{DynamicResource DarkGray}"
+                                    SelectedTab="{Binding SelectedTab}"
+                                    SelectFirstTabCommand="{Binding SelectPostsTapCommand}"
+                                    SelectSecondTabCommand="{Binding SelectLikesTapCommand}"
+                                    Padding="0, 20, 0, 0"/>
+
+            </StackLayout>
+
+            <!--POSTS-->
+            <Grid Grid.Row="1"
+                  IsVisible="{Binding IsPostsVisible}">
+
+                <controls:FeedView ItemSource="{Binding Posts}"
+                                   OnFinishedScrollCommand="{Binding FinishedPostsScrollCommand}">
+
+                    <controls:FeedView.DataTemplate>
+
+                        <DataTemplate>
+
+                            <templates:TweetTemplate TweetTappedCommand="{Binding Source={x:Reference page},
+                                                                                  Path=BindingContext.TweetTapCommand}"
+                                                     MediaTappedCommand="{Binding Source={x:Reference page},
+                                                                                  Path=BindingContext.PostsMediaTapCommand}"
+                                                     MoreTextTappedCommand="{Binding Source={x:Reference page},
+                                                                                     Path=BindingContext.MoreTextTapCommand}"
+                                                     LikeTappedCommand="{Binding Source={x:Reference page},
+                                                                                 Path=BindingContext.PostsLikeTapCommand}"
+                                                     MarkTappedCommand="{Binding Source={x:Reference page},
+                                                                                 Path=BindingContext.PostsMarkTapCommand}"
+                                                     TweetDestiny="Hashtags"/>
+
+                        </DataTemplate>
+
+                    </controls:FeedView.DataTemplate>
+
+                </controls:FeedView>
+
+            </Grid>
+
+            <!--LIKES-->
+            <Grid Grid.Row="1"
+                  IsVisible="{Binding IsLikesVisible}">
+
+                <controls:FeedView ItemSource="{Binding Likes}"
+                                   OnFinishedScrollCommand="{Binding FinishedLikesScrollCommand}">
+
+                    <controls:FeedView.DataTemplate>
+
+                        <DataTemplate>
+
+                            <templates:TweetTemplate TweetTappedCommand="{Binding Source={x:Reference page}, 
+                                                                                  Path=BindingContext.TweetTapCommand}"
+                                                     UserTappedCommand ="{Binding Source={x:Reference page},
+                                                                                  Path=BindingContext.UserTapCommand}" 
+                                                     MediaTappedCommand="{Binding Source={x:Reference page},
+                                                                                  Path=BindingContext.LikesMediaTapCommand}"
+                                                     MoreTextTappedCommand="{Binding Source={x:Reference page},
+                                                                                     Path=BindingContext.MoreTextTapCommand}"
+                                                     LikeTappedCommand="{Binding Source={x:Reference page},
+                                                                                 Path=BindingContext.LikesLikeTapCommand}"
+                                                     MarkTappedCommand="{Binding Source={x:Reference page},
+                                                                                 Path=BindingContext.LikesMarkTapCommand}"
+                                                     TweetDestiny="Hashtags"/>
+
+                        </DataTemplate>
+
+                    </controls:FeedView.DataTemplate>
+
+                </controls:FeedView>
+
+            </Grid>
+
+
+            <StackLayout IsVisible="{Binding IsOutsideTappingEnabled}" 
+                         Grid.RowSpan="2">
+
+                <StackLayout.GestureRecognizers>
+
+                    <TapGestureRecognizer Command="{Binding OutsideTapCommand}"/>
+
+                </StackLayout.GestureRecognizers>
+
+            </StackLayout>
+
+            <!--CURRENT USER DETAIL FRAME-->
+            <Frame WidthRequest="170"
+                   HeightRequest="160"
+                   CornerRadius="4"
+                   Padding="0"
+                   BackgroundColor="{DynamicResource White}"
+                   HasShadow="False"
+                   HorizontalOptions="End"
+                   VerticalOptions="Start"
+                   Margin="0, 13, 13, 0"
+                   IsVisible="{Binding IsCurrentUserDetailVisible}"
+                   Grid.RowSpan="2">
+
+                <StackLayout Padding="15" 
+                             Spacing="20"
+                             VerticalOptions="Center">
+
+                    <controls:ClickableContentView Command="{Binding ShareTapCommand}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Label FontFamily="Ubuntu400"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   TextColor="{DynamicResource Black}"
+                                   Text="{Binding TextResources[Share]}"/>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                    <controls:ClickableContentView Command="{Binding ChangeProfileTapCommand}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Label FontFamily="Ubuntu400"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   TextColor="{DynamicResource Black}"
+                                   Text="{Binding TextResources[ChangeProfile]}"/>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                    <controls:ClickableContentView Command="{Binding MutedProfilesTapCommand}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Label FontFamily="Ubuntu400"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   TextColor="{DynamicResource Black}"
+                                   Text="{Binding TextResources[MutedProfiles]}"/>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                    <controls:ClickableContentView Command="{Binding OpenBlacklistTapCommand}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Label FontFamily="Ubuntu400"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   TextColor="{DynamicResource Black}"
+                                   Text="{Binding TextResources[Blacklist]}"/>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                </StackLayout>
+                
+            </Frame>
+
+            <!--ANOTHER USER DETAIL FRAME-->
+            <Frame WidthRequest="170"
+                   HeightRequest="120"
+                   CornerRadius="4"
+                   Padding="0"
+                   BackgroundColor="{DynamicResource White}"
+                   HasShadow="False"
+                   HorizontalOptions="End"
+                   VerticalOptions="Start"
+                   Margin="0, 13, 13, 0"
+                   IsVisible="{Binding IsAnotherUserDetailVisible}">
+
+                <StackLayout Padding="15" 
+                             Spacing="20"
+                             VerticalOptions="Center">
+
+                    <controls:ClickableContentView Command="{Binding ShareTapCommand}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Label FontFamily="Ubuntu400"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   TextColor="{DynamicResource Black}"
+                                   Text="{Binding TextResources[Share]}"/>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                    <controls:ClickableContentView Command="{Binding MuteTapCommand}"
+                                                   IsEnabled="{Binding IsMuteButtonEnabled}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Label FontFamily="Ubuntu400"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   TextColor="{DynamicResource Black}"
+                                   Text="{Binding MuteButtonText}"/>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                    <controls:ClickableContentView Command="{Binding BlacklistTapCommand}"
+                                                   IsEnabled="{Binding IsBlacklistButtonEnabled}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Label FontFamily="Ubuntu400"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   TextColor="{DynamicResource Black}"
+                                   Text="{Binding BlacklistButtonText}"/>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                </StackLayout>
+
+            </Frame>
+
+            <Frame CornerRadius="4"
+                   BackgroundColor="{DynamicResource DarkGray}" 
+                   HorizontalOptions="Fill"
+                   VerticalOptions="End"
+                   Margin="15, 30"
+                   HasShadow="False"
+                   IsVisible="{Binding IsMuteMessageVisible}"
+                   Grid.RowSpan="2">
+
+                <Label TextColor="{DynamicResource White}" 
+                       Text="{Binding MuteMessageText}"/>
+
+            </Frame>
+
+        </Grid>
+
+    </ContentPage.Content>
+
+</views:BaseContentPage>

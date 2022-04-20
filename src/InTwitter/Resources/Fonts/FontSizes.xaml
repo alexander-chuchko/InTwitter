@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InTwitter.Resources.Fonts.FontSizes">
+
+    <!--TINY-->
+    <OnPlatform x:TypeArguments="x:Double" x:Key="TinyFontSize">
+        <On Platform="iOS" Value="11"/>
+        <On Platform="Android" Value="11"/>
+    </OnPlatform>
+
+    <!--SMALL-->
+    <OnPlatform x:TypeArguments="x:Double" x:Key="SmallFontSize">
+        <On Platform="iOS" Value="14"/>
+        <On Platform="Android" Value="14"/>
+    </OnPlatform>
+
+    <!--NORMAL-->
+    <OnPlatform x:TypeArguments="x:Double" x:Key="NormalFontSize">
+        <On Platform="iOS" Value="17"/>
+        <On Platform="Android" Value="17"/>
+    </OnPlatform>
+
+    <!--ACCENT-->
+    <OnPlatform x:TypeArguments="x:Double" x:Key="AccentFontSize">
+        <On Platform="iOS" Value="20"/>
+        <On Platform="Android" Value="18"/>
+    </OnPlatform>
+
+    <!--LARGE-->
+    <OnPlatform x:TypeArguments="x:Double" x:Key="LargeFontSize">
+        <On Platform="iOS" Value="22"/>
+        <On Platform="Android" Value="22"/>
+    </OnPlatform>
+
+    <!--EXTRA LARGE-->
+    <OnPlatform x:TypeArguments="x:Double" x:Key="ExtraLargeFontSize">
+        <On Platform="iOS" Value="22"/>
+        <On Platform="Android" Value="22"/>
+    </OnPlatform>
+
+</ResourceDictionary>

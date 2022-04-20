@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseLoginContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                            xmlns:views="clr-namespace:InTwitter.Views" 
+                            xmlns:controls="clr-namespace:InTwitter.Controls" 
+                            xmlns:controlsEntry="clr-namespace:InTwitter.Controls.FloatingEntry"
+                            NavigationPage.HasNavigationBar="False"
+                            NavigationPage.HasBackButton="False"
+                            x:Class="InTwitter.Views.LogInPage">
+
+    <controls:KeyboardView VerticalOptions="FillAndExpand">
+
+        <StackLayout>
+
+            <StackLayout.GestureRecognizers>
+
+                <TapGestureRecognizer Command="{Binding OutsideTapCommand}"/>
+
+            </StackLayout.GestureRecognizers>
+
+            <!-- NAVBAR -->
+            <controls:Login_NavBar TitlePage="{Binding TitlePage}"
+                               TitlePageColor="{DynamicResource PrimaryColor}"
+                               TitlePageFontSize="{DynamicResource LargeFontSize}"
+                               TitlePageFontFamily="Ubuntu500"/>
+
+            <!-- CONTENT -->
+            <Grid RowDefinitions="*" 
+              VerticalOptions="FillAndExpand" 
+              Padding="0">
+
+                <StackLayout VerticalOptions="Fill"
+                             Padding="{DynamicResource VerticalIndentContentSignUpPage}"
+                             Spacing="0">
+                    <ScrollView>
+
+                    <StackLayout Padding="{DynamicResource HorizontalIndent}"
+                                 Spacing="{DynamicResource SpacingStackLayoutSignUpPage}">
+
+                        <!-- ENTRY EMAIL -->
+                        <controlsEntry:CustomFloatingEntry EntryText="{Binding Email}"
+                                                           EntryFontSize="{DynamicResource AccentFontSize}"
+                                                           EntryTextColor="{DynamicResource Black}"
+                                                           EntryFontFamily="Ubuntu400"
+                                                           PlaceholderColor="{DynamicResource DarkGray}"
+                                                           LabelText="{Binding TextResources[Email]}"
+                                                           LabelFontSize="{DynamicResource SmallFontSize}"
+                                                           LabelFontFamily="Ubuntu400"
+                                                           LabelTextColor="{DynamicResource PrimaryColor}"
+                                                           BoxViewColor="{DynamicResource LightGray}"
+                                                           ErrorText="{Binding ErrorEmailText}"
+                                                           ErrorTextColor="{DynamicResource ErrorColor}"
+                                                           ErrorFontSize="{DynamicResource SmallFontSize}"
+                                                           ErrorFontFamily="Ubuntu400"
+                                                           EntryFocused="{Binding EntryEmailFocused}"
+                                                           IsClearImageEnabled="True">
+                            <controlsEntry:CustomFloatingEntry.Margin>
+                                <OnPlatform x:TypeArguments="Thickness">
+                                    <On Platform="iOS" Value="0,20,0,0"/>
+                                    <On Platform="Android" Value="0"/>
+                                </OnPlatform>
+                            </controlsEntry:CustomFloatingEntry.Margin>
+                        </controlsEntry:CustomFloatingEntry>
+
+                        <!-- ENTRY PASSWORD -->
+                        <controlsEntry:CustomFloatingEntry IsPassword="True"
+                                                           EntryText="{Binding Password}"
+                                                           EntryFontSize="{DynamicResource AccentFontSize}"
+                                                           EntryTextColor="{DynamicResource Black}"
+                                                           EntryFontFamily="Ubuntu400"
+                                                           PlaceholderColor="{DynamicResource DarkGray}"
+                                                           LabelText="{Binding TextResources[Password]}"
+                                                           LabelFontSize="{DynamicResource SmallFontSize}"
+                                                           LabelFontFamily="Ubuntu400"
+                                                           LabelTextColor="{DynamicResource PrimaryColor}"
+                                                           BoxViewColor="{DynamicResource LightGray}"
+                                                           ErrorText="{Binding ErrorPasswordText}"
+                                                           ErrorTextColor="{DynamicResource ErrorColor}"
+                                                           ErrorFontSize="{DynamicResource SmallFontSize}"
+                                                           ErrorFontFamily="Ubuntu400"
+                                                           EntryFocused="{Binding EntryPasswordFocused}"
+                                                           IsClearImageEnabled="True"/>
+
+                    </StackLayout>
+                    </ScrollView>
+
+                    <StackLayout  VerticalOptions="FillAndExpand"
+                                  Padding="{DynamicResource VerticalIndentButtonsSignUpPage}">
+
+                        <StackLayout.Triggers>
+
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding IsNormalButtonSize}"
+                                         Value="False">
+
+                                <Setter Property="Padding" Value="0"/>
+                                
+                            </DataTrigger>
+                            
+                        </StackLayout.Triggers>
+
+                        <!-- LOG IN BUTTON -->
+                        <controls:ResizedButton 
+                                            HeightRequest="45"
+                                            WidthRequest="198"
+                                            CornerRadius="22"
+                                            BackgroundColor="{DynamicResource PrimaryColor}"
+                                            TextTransform="None"
+                                            TextColor="{DynamicResource White}"
+                                            HorizontalOptions="CenterAndExpand"
+                                            VerticalOptions="Start"
+                                            FontFamily="Ubuntu500"
+                                            FontSize="{DynamicResource NormalFontSize}"
+                                            Text="{Binding LogInButtonText}"
+                                            IsNormalButtonSize="{Binding IsNormalButtonSize}"
+                                            Command="{Binding LogInButtonCommand}"/>
+
+                        <!-- SIGN UP BUTTON -->
+                        <Button 
+                            Text="{Binding TextResources[SignUp]}"
+                            BackgroundColor="Transparent"
+                            TextTransform="None"
+                            TextColor="{DynamicResource PrimaryColor}"
+                            FontFamily="Ubuntu500"
+                            FontSize="{DynamicResource NormalFontSize}"
+                            IsVisible="{Binding SignUpButtonVisibility}"
+                            Command="{Binding SignUpCommand}"/>
+
+                    </StackLayout>
+                    
+                </StackLayout>
+                
+            </Grid>
+            
+        </StackLayout>
+        
+    </controls:KeyboardView>
+    
+</views:BaseLoginContentPage>

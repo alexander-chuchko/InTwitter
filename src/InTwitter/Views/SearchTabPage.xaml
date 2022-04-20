@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseTabPage xmlns:views="clr-namespace:InTwitter.Views"
+                   xmlns:controls="clr-namespace:InTwitter.Controls" 
+                   xmlns="http://xamarin.com/schemas/2014/forms"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:prism="http://prismlibrary.com"
+                   xmlns:state="clr-namespace:InTwitter.Controls.StateContainer" 
+                   xmlns:viewmodels="clr-namespace:InTwitter.ViewModels"
+                   xmlns:entities="clr-namespace:InTwitter.Models" 
+                   xmlns:tweet="clr-namespace:InTwitter.Models.Tweet" 
+                   xmlns:templates="clr-namespace:InTwitter.Views.Templates"
+                   prism:ViewModelLocator.AutowireViewModel="True"
+                   x:Class="InTwitter.Views.SearchTabPage"
+                   x:Name="page"
+                   Style="{DynamicResource pageStyle}"
+                   x:DataType="viewmodels:SearchTabPageViewModel">
+
+    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0">
+
+        <!--SEARCH BAR-->
+        <controls:SearchBar HasShadow="False" Padding="0,10" BackgroundColor="{DynamicResource White}"
+                            UserIcon="{Binding Path=User.IconSource}"
+                            SearchField="{Binding SearchField}"
+                            State="{Binding SearchBarState}"
+                            PlaceholderText="{Binding TextResources[Search]}"
+                            OnClearButtonTapped="{Binding ClearTappedCommand}"
+                            SearchCompleteCommand="{Binding SearchCompleteCommand}"
+                            UserTapCommand="{Binding Source={x:Reference page}, Path=BindingContext.UserTapped}"/>
+        <BoxView Style="{DynamicResource searchSeparatorStyle}"/>
+
+        <state:StateContainer State="{Binding PageStatus}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+            <state:StateContainer.Conditions>
+
+                <!--IF SEARCH FIELD EMPTY-->
+                <state:StateCondition Is="PopularThemes">
+
+                    <StackLayout Spacing="0" Padding="{DynamicResource HorizontalIndent}">
+                        <!--POPULAR THEMES LABEL-->
+                        <Label Text="{Binding TextResources[PopularThemes]}"
+                               FontFamily="Ubuntu500"
+                               TextColor="{DynamicResource Black}"
+                               FontSize="{DynamicResource LargeFontSize}"
+                               Padding="0,20,0,10"/>
+
+                        <BoxView Style="{DynamicResource searchSeparatorStyle}"/>
+
+                        <ScrollView>
+                            <StackLayout BindableLayout.ItemsSource="{Binding PopularThemes}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="entities:PopularTheme">
+                                        <StackLayout HorizontalOptions="FillAndExpand">
+
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Path=BindingContext.PopularThemeTapped, Source={Reference page}}"
+                                                                  CommandParameter="{Binding .}"/>
+                                            </StackLayout.GestureRecognizers>
+
+                                            <!--POPULAR THEME-->
+                                            <StackLayout Orientation="Horizontal" >
+                                                <StackLayout HorizontalOptions="StartAndExpand" Padding="0,20,0,10">
+                                                    <Label Text="{Binding Theme}" FontSize="{DynamicResource NormallFontSize}" 
+                                                           TextColor="{DynamicResource Black}"
+                                                           FontFamily="Ubuntu500"/>
+                                                    <Label Text="{Binding PostsAmount, StringFormat='Posts: {0}'}"
+                                                           FontSize="{DynamicResource TinyFontSize}"
+                                                           TextColor="{DynamicResource DarkGray}" 
+                                                           FontFamily="Ubuntu400"/>
+                                                </StackLayout>
+
+                                                <controls:ClickableContentView HorizontalOptions="End" SelectedScale="1.1">
+                                                    <Image Source="ic_right_gray.png"
+                                                           Scale="1.2"/>
+                                                </controls:ClickableContentView>
+                                            </StackLayout>
+
+                                            <!--SEPARATOR-->
+                                            <BoxView Style="{DynamicResource searchSeparatorStyle}"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                        </ScrollView>
+                    </StackLayout>
+                </state:StateCondition>
+
+                <!--IF RESULTS IN LOADING-->
+                <state:StateCondition Is="LoadingResults">
+                    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                        <ActivityIndicator IsRunning="True" Color="{DynamicResource PrimaryColor}"/>
+                    </StackLayout>
+                </state:StateCondition>
+
+                <!--IF SEARCH FIELD NOT EMPTY-->
+                <state:StateCondition Is="ShowResults">
+
+                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <controls:FeedView  ItemSource="{Binding Tweets}"
+                                            OnFinishedScrollCommand="{Binding FinishedScrollCommand}"
+                                            ScrollPosition="{Binding ScrollPosition}">
+
+                            <controls:FeedView.DataTemplate>
+                                <DataTemplate x:DataType="tweet:TweetViewModel">
+
+                                    <templates:TweetTemplate TweetTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.TweetTapped}"
+                                                            UserTappedCommand ="{Binding Source={x:Reference page}, Path=BindingContext.UserTapped }"
+                                                            MediaTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.MediaTapped}"
+                                                            MoreTextTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.MoreTextTapped}"
+                                                            AccentedText="{Binding Source={x:Reference page}, Path=BindingContext.SearchField}"
+                                                            LikeTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.LikeTappedCommand}"
+                                                            MarkTappedCommand="{Binding Source={x:Reference page}, Path=BindingContext.MarkTappedCommand}"
+                                                            TweetDestiny="Search"/>
+                                </DataTemplate>
+                            </controls:FeedView.DataTemplate>
+                        </controls:FeedView>
+
+
+
+                    </StackLayout>
+                </state:StateCondition>
+
+                <!--IF RESULT NOT FOUND-->
+                <state:StateCondition Is="EmptyResult">
+                    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                        <Image Source="pic_empty_state" Scale="1.2" Margin="0,0,0,26"/>
+                        <Label Text="{Binding TextResources[NoResultFor]}"
+                               HorizontalOptions="Center"
+                               FontSize="{DynamicResource AccentFontSize}"
+                               FontFamily="Ubuntu400"
+                               TextColor="{DynamicResource Black}"/>
+                        <Label Text="{Binding NoResultMessage}"
+                               HorizontalOptions="Center"
+                               FontSize="{DynamicResource AccentFontSize}"
+                               FontFamily="Ubuntu400"
+                               TextColor="{DynamicResource Black}"/>
+                    </StackLayout>
+                </state:StateCondition>
+            </state:StateContainer.Conditions>
+        </state:StateContainer>
+
+
+    </StackLayout>
+
+</views:BaseTabPage>

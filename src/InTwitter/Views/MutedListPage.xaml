@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage xmlns:views="clr-namespace:InTwitter.Views"
+                       xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:prism="http://prismlibrary.com"
+                       xmlns:controls="clr-namespace:InTwitter.Controls" 
+                       xmlns:state="clr-namespace:InTwitter.Controls.StateContainer"
+                       prism:ViewModelLocator.AutowireViewModel="True"
+                       x:Class="InTwitter.Views.MutedListPage"
+                       NavigationPage.HasNavigationBar="False"
+                       BackgroundColor="{DynamicResource White}"
+                       x:Name="page">
+
+    <ContentPage.Content>
+
+        <StackLayout Spacing="0">
+
+            <Grid ColumnDefinitions="*" 
+                  Padding="{DynamicResource Indent}">
+
+                <!--GO BACK BUTTON-->
+                <controls:ClickableContentView Grid.Column="0"
+                                               HorizontalOptions="Start"
+                                               VerticalOptions="Center"
+                                               Command="{Binding GoBackTapCommand}">
+
+                    <controls:ClickableContentView.Content>
+
+                        <Image WidthRequest="30"
+                               HeightRequest="30"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Center"
+                               Source="ic_left_gray.png"/>
+
+                    </controls:ClickableContentView.Content>
+
+                </controls:ClickableContentView>
+
+                <!--TITLE-->
+                <Label Grid.Column="0"
+                       Text="{Binding TextResources[Mute]}"
+                       TextColor="{DynamicResource Black}"
+                       FontSize="{DynamicResource LargeFontSize}"
+                       FontFamily="Ubuntu500"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+
+            </Grid>
+
+            <!--SEPARATOR-->
+            <BoxView HeightRequest="1"
+                     BackgroundColor="{DynamicResource LightGray}"/>
+
+            <state:StateContainer State="{Binding ListStatus}"
+                                  HorizontalOptions="FillAndExpand"
+                                  VerticalOptions="FillAndExpand">
+
+                <state:StateContainer.Conditions>
+
+                    <!--EMPTY MUTED LIST MESSAGE-->
+                    <state:StateCondition Is="Empty">
+
+                        <StackLayout VerticalOptions="Center">
+
+                            <Image Source="pic_empty_state" 
+                                   Scale="1.2" 
+                                   Margin="0,0,0,26"/>
+
+                            <Label Text="{Binding TextResources[NotMutedListMessage]}"
+                                   HorizontalOptions="Center"
+                                   FontSize="{DynamicResource AccentFontSize}"
+                                   FontFamily="Ubuntu400"
+                                   TextColor="{DynamicResource Black}"/>
+
+                        </StackLayout>
+
+                    </state:StateCondition>
+
+                    <!--MUTED LIST-->
+                    <state:StateCondition Is="Fill">
+
+                        <ScrollView>
+
+                            <StackLayout BindableLayout.ItemsSource="{Binding UserList}">
+
+                                <BindableLayout.ItemTemplate>
+
+                                    <DataTemplate>
+
+                                        <Grid RowDefinitions="*"
+                                              HeightRequest="80">
+
+                                            <StackLayout Orientation="Horizontal"
+                                                         Spacing="15"
+                                                         Padding="15, 0"
+                                                         VerticalOptions="FillAndExpand">
+
+                                                <!--PROFILE AVATAR-->
+                                                <controls:ClickableContentView WidthRequest="40"
+                                                                               HeightRequest="40"
+                                                                               VerticalOptions="Center"
+                                                                               Command="{Binding Source={x:Reference page},
+                                                                                                 Path=BindingContext.OpenProfileTapCommand}"
+                                                                               CommandParameter="{Binding .}">
+
+                                                    <controls:ClickableContentView.Content>
+
+                                                        <Frame WidthRequest="40"
+                                                               HeightRequest="40"
+                                                               CornerRadius="20"
+                                                               HasShadow="False"
+                                                               IsClippedToBounds="True"
+                                                               Padding="0"
+                                                               VerticalOptions="Center">
+
+                                                            <Image Source="{Binding IconSource}"
+                                                                   Aspect="AspectFill"/>
+
+                                                        </Frame>
+
+                                                    </controls:ClickableContentView.Content>
+
+                                                </controls:ClickableContentView>
+
+                                                <!--PROFILEINFO-->
+                                                <StackLayout Spacing="4"
+                                                             VerticalOptions="Center">
+
+                                                    <!--NAME-->
+                                                    <Label FontFamily="Ubuntu500"
+                                                           FontSize="{DynamicResource NormalFontSize}"
+                                                           TextColor="{DynamicResource Black}"
+                                                           Text="{Binding Name}"/>
+
+                                                    <!--EMAIL-->
+                                                    <Label FontFamily="Ubuntu400"
+                                                           FontSize="{DynamicResource NormalFontSize}"
+                                                           TextColor="{DynamicResource DarkGray}"
+                                                           Text="{Binding Email}"/>
+
+                                                </StackLayout>
+
+                                                <controls:ClickableContentView HorizontalOptions="EndAndExpand"
+                                                                               VerticalOptions="Center"
+                                                                               Command="{Binding Source={x:Reference page},
+                                                                                                 Path=BindingContext.RemoveProfileTapCommand}"
+                                                                               CommandParameter="{Binding .}">
+
+                                                    <controls:ClickableContentView.Content>
+
+                                                        <Label Text="{Binding Source={x:Reference page},
+                                                                              Path=BindingContext.TextResources[Remove]}"
+                                                               FontFamily="Ubuntu500"
+                                                               FontSize="{DynamicResource NormalFontSize}"
+                                                               TextColor="{DynamicResource PrimaryColor}"/>
+
+                                                    </controls:ClickableContentView.Content>
+
+                                                </controls:ClickableContentView>
+
+                                            </StackLayout>
+
+                                            <!--SEPARATOR-->
+                                            <BoxView HeightRequest="1"
+                                                     BackgroundColor="{DynamicResource LightGray}"
+                                                     VerticalOptions="End"/>
+
+                                        </Grid>
+
+                                    </DataTemplate>
+
+                                </BindableLayout.ItemTemplate>
+
+                            </StackLayout>
+
+                        </ScrollView>
+
+                    </state:StateCondition>
+
+                </state:StateContainer.Conditions>
+
+            </state:StateContainer>
+
+        </StackLayout>
+
+    </ContentPage.Content>
+
+</views:BaseContentPage>

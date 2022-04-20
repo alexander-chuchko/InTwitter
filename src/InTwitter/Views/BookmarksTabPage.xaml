@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseTabPage xmlns="http://xamarin.com/schemas/2014/forms"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:prism="http://prismlibrary.com"
+                   xmlns:views="clr-namespace:InTwitter.Views"
+                   prism:ViewModelLocator.AutowireViewModel="True"
+                   NavigationPage.HasNavigationBar="False"
+                   xmlns:controls="clr-namespace:InTwitter.Controls"
+                   xmlns:templates="clr-namespace:InTwitter.Views.Templates" 
+                   xmlns:viewmodels="clr-namespace:InTwitter.ViewModels"
+                   x:Class="InTwitter.Views.BookmarksTabPage"
+                   Style="{DynamicResource pageStyle}"
+                   x:DataType="viewmodels:BookmarksTabPageViewModel"
+                   x:Name="bookmarksPage">
+
+    <Grid RowDefinitions="Auto, *"
+          Padding="0">
+
+        <Grid.GestureRecognizers>
+
+            <TapGestureRecognizer Command="{Binding CloseDeleteMenuCommand}"/>
+
+        </Grid.GestureRecognizers>
+
+        <!-- NAVBAR -->
+        <StackLayout Padding="0">
+
+            <StackLayout.GestureRecognizers>
+
+                <TapGestureRecognizer Command="{Binding CloseDeleteMenuCommand}"/>
+
+            </StackLayout.GestureRecognizers>
+
+            <Grid ColumnDefinitions="*"
+                  Padding="{DynamicResource Indent}">
+
+                <!-- TITLE PAGE -->
+                <Label Text="{Binding TextResources[Bookmarks]}"
+                       TextColor="{DynamicResource Black}"
+                       FontFamily="Ubuntu500"
+                       FontSize="{DynamicResource LargeFontSize}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+
+                <controls:ClickableContentView Command="{Binding OpenDeleteMenuCommand}"
+                                               WidthRequest="30"
+                                               HorizontalOptions="End">
+
+                    <controls:ClickableContentView.Content>
+
+                        <!-- DOTS IMAGE -->
+                        <Image x:Name="dotsImage"
+                               Source="ic_hidden_menu_gray.png"
+                               Scale="1.2"
+                               HorizontalOptions="End"
+                               VerticalOptions="Center"
+                               IsVisible="{Binding IsDotsImageVisible}">
+
+                        </Image>
+
+                    </controls:ClickableContentView.Content>
+
+                </controls:ClickableContentView>
+
+            </Grid>
+
+        </StackLayout>
+
+        <Grid Grid.Row="1"
+              RowDefinitions="*,*"
+              VerticalOptions="FillAndExpand"
+              IsVisible="{Binding IsGridVisible}">
+
+            <!-- SEPARATOR -->
+            <BoxView HeightRequest="1"
+                     Color="{DynamicResource LightGray}"
+                     VerticalOptions="Start"/>
+
+            <!-- IMAGE NO BOOKMARKS -->
+            <Image Source="pic_empty_state.png"
+                   VerticalOptions="End"
+                   Scale="1.2"
+                   Margin="0,0,0,30"/>
+
+            <!-- LABEL NO BOOKMARKS -->
+            <Label Grid.Row="1"
+                   Margin="0,10,0,0"
+                   Text="{Binding TextResources[NotBookmarksMessage]}"
+                   VerticalOptions="Start"
+                   HorizontalOptions="Center"
+                   TextColor="{DynamicResource Black}"
+                   FontFamily="Ubuntu400"
+                   FontSize="{DynamicResource AccentFontSize}"/>
+
+        </Grid>
+
+        <controls:FeedView  Grid.Row="1"
+                            ItemSource="{Binding Tweets}"
+                            OnFinishedScrollCommand="{Binding FinishedScrollCommand}"
+                            ScrollPosition="{Binding ScrollPosition}"
+                            TappedFeed="{Binding TapFeed}">
+
+            <controls:FeedView.DataTemplate>
+
+                <DataTemplate>
+
+                    <templates:TweetTemplate TweetTappedCommand="{Binding Source={x:Reference bookmarksPage}, Path=BindingContext.TweetTapped}"
+                                            UserTappedCommand ="{Binding Source={x:Reference bookmarksPage}, Path=BindingContext.UserTapped }" 
+                                            MediaTappedCommand="{Binding Source={x:Reference bookmarksPage}, Path=BindingContext.MediaTapped}"
+                                            HashtagTappedCommand="{Binding Source={x:Reference bookmarksPage}, Path=BindingContext.HashtagTapped}"
+                                            MoreTextTappedCommand="{Binding Source={x:Reference bookmarksPage}, Path=BindingContext.MoreTextTapped}"
+                                            MarkTappedCommand="{Binding Source={x:Reference bookmarksPage},
+                                                                        Path=BindingContext.MarkTappedCommand}"
+                                            LikeTappedCommand="{Binding Source={x:Reference bookmarksPage},
+                                                                        Path=BindingContext.LikeTappedCommand}"
+                                            TweetDestiny="Hashtags" />
+
+                </DataTemplate>
+
+            </controls:FeedView.DataTemplate>
+
+        </controls:FeedView>
+
+        <!-- DELETE ALL BOOKMARKS MENU -->
+        <Frame Padding="0"
+               HorizontalOptions="End"
+               VerticalOptions="Start"
+               CornerRadius="4"
+               BackgroundColor="{DynamicResource White}"
+               HasShadow="True"
+               Margin="0,13,13,0"
+               HeightRequest="50"
+               WidthRequest="165"
+               Grid.RowSpan="2"
+               IsVisible="{Binding IsDeleteMenuVisible}">
+
+            <controls:ClickableContentView Command="{Binding DeleteBookmarksCommand}">
+
+                <controls:ClickableContentView.Content>
+
+                    <Label FontFamily="Ubuntu400"
+                           FontSize="{DynamicResource SmallFontSize}"
+                           TextColor="{DynamicResource Black}"
+                           Text="{Binding TextResources[DeleteAllBookmarks]}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center">
+
+                    </Label>
+
+                </controls:ClickableContentView.Content>
+
+            </controls:ClickableContentView>
+
+        </Frame>
+
+    </Grid>
+
+</views:BaseTabPage>

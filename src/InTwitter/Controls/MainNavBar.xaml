@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:controls="clr-namespace:InTwitter.Controls"
+             x:Class="InTwitter.Controls.MainNavBar"
+             x:Name="view"
+             BackgroundColor="{DynamicResource White}">
+
+    <Grid ColumnDefinitions="*" 
+          
+          Padding="{DynamicResource Indent}">
+
+        <!-- Icon profile -->
+        <controls:ClickableContentView x:Name="leftClickableView"
+                                       Grid.Column="0"
+                                       HorizontalOptions="Start"
+                                       VerticalOptions="Center">
+            
+            <Frame CornerRadius="12"
+                   IsClippedToBounds="True"
+                   Padding="0"
+                   HeightRequest="28"
+                   WidthRequest="28"
+                   HasShadow="False">
+
+                <Image x:Name="leftButton"
+                       BackgroundColor="{DynamicResource White}"
+                       Aspect="AspectFill"/>
+            </Frame>
+
+        </controls:ClickableContentView>
+
+        <!--Title view -->
+        <Label x:Name="title"
+               Grid.Column="0"
+               Text="{Binding Title, Source={Reference view}}"
+               TextColor="{DynamicResource Black}"
+               FontSize="{DynamicResource LargeFontSize}"
+               FontFamily="Ubuntu500"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"/>
+
+        <!-- Exit -->
+        <controls:ClickableContentView x:Name="rightClickableView"
+                                       Grid.Column="0"
+                                       HorizontalOptions="End"
+                                       VerticalOptions="Center"
+                                       HeightRequest="28"
+                                       WidthRequest="28">
+            
+            <Image x:Name="rightButton"
+                   Source="ic_add_blue.png"
+                   BackgroundColor="{DynamicResource White}"/>
+            
+
+        </controls:ClickableContentView>
+
+    </Grid>
+
+</ContentView>

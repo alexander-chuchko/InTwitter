@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<controls:ClickableContentView  xmlns:controls="clr-namespace:InTwitter.Controls"
+                                xmlns="http://xamarin.com/schemas/2014/forms" 
+                                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                                x:Class="InTwitter.Controls.AddButton">
+    <controls:ClickableContentView.Content>
+        <Grid>
+            <!-- Shadow for button -->
+
+            <Frame CornerRadius="30"
+                   WidthRequest="60" 
+                   HeightRequest="60" 
+                   HasShadow="True"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   BackgroundColor="{DynamicResource PrimaryColor}"
+                   Padding="0">
+
+            </Frame>
+
+            <!-- AddPin -->
+
+            <Image BackgroundColor="Transparent" 
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   Aspect="AspectFill"
+                   Scale="1.2"
+                   Source="ic_add_white.png"/>
+            
+        </Grid>
+    </controls:ClickableContentView.Content>
+</controls:ClickableContentView>

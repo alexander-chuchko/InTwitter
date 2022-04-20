@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Label xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InTwitter.Controls.ShortLabel"
+             x:Name="label"
+             Style="{DynamicResource tweetTextStyle}">
+    <Label.FormattedText>
+        <FormattedString>
+            <FormattedString.Spans>
+                <Span Text="{Binding CurrentText, Source={Reference label}}"/>
+                <Span Text="{Binding CurrentMoreText, Source={Reference label}}" TextColor="{DynamicResource PrimaryColor}"/>
+            </FormattedString.Spans>
+        </FormattedString>
+    </Label.FormattedText>
+</Label>

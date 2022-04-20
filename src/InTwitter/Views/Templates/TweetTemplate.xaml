@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+              xmlns:controls="clr-namespace:InTwitter.Controls"
+              xmlns:statecontainer="clr-namespace:InTwitter.Controls.StateContainer"
+              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+              xmlns:tweets="clr-namespace:InTwitter.Models.Tweet"
+              xmlns:entities="clr-namespace:InTwitter.Models"
+              x:Class="InTwitter.Views.Templates.TweetTemplate"
+              x:Name="template"
+              Padding="0" Margin="0" Spacing="0"
+              x:DataType="tweets:TweetViewModel">
+    <StackLayout Padding="0" Margin="0">
+        <!--SEPARATOR-->
+        <BoxView HeightRequest="1"
+                 HorizontalOptions="FillAndExpand" 
+                 Color="{DynamicResource LightGray}"/>
+
+        <Grid ColumnDefinitions="50,*" Padding="12,8,12,14" ColumnSpacing="0">
+
+            <StackLayout Padding="0,0,10,0" Grid.Column="0">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={x:Reference template}, Path=UserTappedCommand}"
+                                          CommandParameter="{Binding User}"/>
+                </StackLayout.GestureRecognizers>
+
+                <!--USER ICON-->
+                <Frame  WidthRequest="40"
+                            HeightRequest="40" 
+                            CornerRadius="20"
+                            Padding="0"
+                            BackgroundColor="{DynamicResource White}"
+                            HasShadow="False"
+                            VerticalOptions="Start" 
+                            HorizontalOptions="Center"
+                            IsClippedToBounds="True">
+                    
+                    <ff:CachedImage BackgroundColor="{DynamicResource White}"
+                                    Source="{Binding Path=User.IconSource}"
+                                    Aspect="AspectFill"/>
+                </Frame>
+                
+            </StackLayout>
+
+            <StackLayout Grid.Column="1" Padding="0" Margin="0" Spacing="0">
+
+                <!--USERNAME-->
+                <Label Text="{Binding Path=User.Name}"
+                       FontSize="{DynamicResource NormalFontSize}" 
+                       TextColor="{DynamicResource Black}"
+                       FontFamily="Ubuntu500">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={x:Reference template}, Path=UserTappedCommand}"
+                                              CommandParameter="{Binding User}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+
+                <!--TWEET TEXT-->
+                <statecontainer:StateContainer State="{Binding Path=TweetDestiny, Source={Reference template}}">
+                    <statecontainer:StateContainer.Conditions>
+
+                        <!--NEED HASHTAGS-->
+                        <statecontainer:StateCondition Is="Hashtags">
+                            <controls:LabelWithHashtags LineHeight="1.2"
+                                            TextStyle="{DynamicResource tweetTextStyle}"
+                                            HashtagStyle="{DynamicResource tweetHashTagStyle}"
+                                            HashtagTapCommand="{Binding HashtagTappedCommand, Source={Reference template}}"
+                                            MoreTextStyle="{DynamicResource tweetHashTagStyle}"
+                                            MoreTapCommand="{Binding Source={x:Reference template}, Path=MoreTextTappedCommand}"
+                                            IsShorted="{Binding IsShortText}"
+                                            HasShorted="{Binding IsTextShorted}"
+                                            MaxSymbols="170"
+                                            Text="{Binding Text}"
+                                            Wrap="Wrap" 
+                                            AlignItems="Start"
+                                            AlignContent="Start"
+                                            JustifyContent="Start"
+                                            Direction="Row" 
+                                            VerticalOptions="FillAndExpand" 
+                                            HorizontalOptions="FillAndExpand">
+                                <controls:DistributedLabel.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference template}, Path=TweetTappedCommand}"
+                                              CommandParameter="{Binding .}"/>
+                                </controls:DistributedLabel.GestureRecognizers>
+                            </controls:LabelWithHashtags>
+                        </statecontainer:StateCondition>
+
+                        <!--NEED SEARCH-->
+                        <statecontainer:StateCondition Is="Search">
+                            <controls:LabelWithAccentedWords LineHeight="1.2"
+                                                 TextStyle="{DynamicResource tweetTextStyle}"
+                                                 MoreTextStyle="{DynamicResource tweetHashTagStyle}"
+                                                 HashtagStyle="{DynamicResource tweetHashTagStyle}"
+                                                 AccentedText="{Binding Source={Reference template}, Path=AccentedText}"
+                                                 Text="{Binding Text}"
+                                                 Wrap="Wrap" 
+                                                 AlignItems="Start"
+                                                 AlignContent="Start"
+                                                 JustifyContent="Start"
+                                                 Direction="Row" 
+                                                 VerticalOptions="FillAndExpand" 
+                                                 HorizontalOptions="FillAndExpand">
+                                <controls:DistributedLabel.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference template}, Path=TweetTappedCommand}"
+                                              CommandParameter="{Binding .}"/>
+                                </controls:DistributedLabel.GestureRecognizers>
+                            </controls:LabelWithAccentedWords>
+                        </statecontainer:StateCondition>
+
+                    </statecontainer:StateContainer.Conditions>
+                </statecontainer:StateContainer>
+
+
+
+                <!--MEDIA CONTAINER-->
+                <statecontainer:StateContainer State="{Binding HasMedia}" HorizontalOptions="FillAndExpand">
+                    <statecontainer:StateCondition Is="True">
+                        <StackLayout>
+                            <controls:AutoGrid ItemsSource="{Binding MediaSources}" ColumnSpacing="5" RowSpacing="5" Padding="0,12,0,0">
+                                <controls:AutoGrid.Template>
+                                    <DataTemplate>
+                                        <controls:MediaContainer x:DataType="entities:MediaSourceViewModel"
+                                                                 Type="{Binding MediaType}"
+                                                                 Source="{Binding MediaSource}">
+                                            <controls:MediaContainer.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={x:Reference template}, Path=MediaTappedCommand}"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </controls:MediaContainer.GestureRecognizers>
+                                        </controls:MediaContainer>
+                                    </DataTemplate>
+                                </controls:AutoGrid.Template>
+                            </controls:AutoGrid>
+                        </StackLayout>
+                    </statecontainer:StateCondition>
+                </statecontainer:StateContainer>
+
+
+                <!--FOOTER-->
+                <StackLayout Style="{DynamicResource tweetFooterStyle}">
+
+                    <!--CREATION DATE-->
+                    <Label Text="{Binding Path=CreationDate}"
+                           HorizontalOptions="StartAndExpand" 
+                           VerticalOptions="Center"
+                           Style="{DynamicResource tweetCreationTimeStyle}"/>
+
+                    <controls:ClickableContentView VerticalOptions="Center"
+                                                   HorizontalOptions="End" 
+                                                   SelectedScale="1.1" 
+                                                   Padding="5"
+                                                   Command="{Binding LikeTappedCommand, Source={Reference template}}"
+                                                   CommandParameter="{Binding .}">
+                        <controls:LikeControl IsLiked="{Binding IsUserLiked}"
+                                              VerticalOptions="CenterAndExpand"
+                                              HorizontalOptions="CenterAndExpand" 
+                                              LikesAmount="{Binding LikesAmount}"
+                                              NormalStyle="{DynamicResource tweetLikeStyle}"
+                                              ActivatedStyle="{DynamicResource tweetLikeActivateStyle}"
+                                              CheckedImageSource="ic_like_blue.png"
+                                              UncheckedImageSource="ic_like_gray.png"/>
+                    </controls:ClickableContentView>
+
+                    <!--LIKES-->
+
+
+                    <!--MARK-->
+                    <controls:ClickableContentView Command="{Binding MarkTappedCommand, Source={Reference template}}"
+                                                   CommandParameter="{Binding .}"
+                                                   SelectedScale="1.1"
+                                                   Padding="5">
+                        <controls:ImageCheckBox BackgroundColor="{DynamicResource White}"
+                                                VerticalOptions="Center"
+                                                WidthRequest="20"
+                                                HeightRequest="20"
+                                                Scale="1.2"
+                                                HorizontalOptions="End" 
+                                                CheckedImageSource="ic_bookmarks_blue.png"
+                                                UncheckedImageSource="ic_bookmarks_gray.png"
+                                                IsChecked="{Binding IsUserMarked}"/>
+                    </controls:ClickableContentView>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </StackLayout>
+</StackLayout>

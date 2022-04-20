@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage  xmlns:views="clr-namespace:InTwitter.Views"
+                        xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:prism="http://prismlibrary.com" 
+                        xmlns:controls="clr-namespace:InTwitter.Controls" 
+                        xmlns:statecontainer="clr-namespace:InTwitter.Controls.StateContainer" 
+                        xmlns:addpost="clr-namespace:InTwitter.Controls.AddPost"
+                        xmlns:viewmodels="clr-namespace:InTwitter.ViewModels" 
+                        xmlns:models_media="clr-namespace:InTwitter.Models"
+                        prism:ViewModelLocator.AutowireViewModel="True"
+                        x:Class="InTwitter.Views.AddPostPage"
+                        NavigationPage.HasNavigationBar="False"
+                        x:DataType="viewmodels:AddPostPageViewModel"
+                        xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+                        BackgroundColor="{DynamicResource White}">
+
+    <controls:KeyboardView VerticalOptions="FillAndExpand"
+                           RowDefinitions="Auto,*,58"
+                           RowSpacing="0">
+
+        <!-- NAVBAR -->
+        <Grid Grid.Row="0"
+              Padding="{DynamicResource Indent}">
+
+            <!-- BACK BUTTON -->
+            <ImageButton Grid.Column="0"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Center"
+                         Source="ic_cansell.png"
+                         BackgroundColor="Transparent"
+                         Scale="1.2"
+                         Command="{Binding GoBackTapCommand}"/>
+
+            <!-- POST BUTTON -->
+            <Button Text="{Binding TextResources[Post]}"
+                    TextTransform="None"
+                    FontFamily="Ubuntu500"
+                    FontSize="{DynamicResource NormalFontSize}"
+                    TextColor="{DynamicResource White}"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    BackgroundColor="{Binding PostButtonColor}"
+                    CornerRadius="14"
+                    HeightRequest="28"
+                    WidthRequest="89"
+                    Padding="0"
+                    Margin="0"
+                    Command="{Binding PostButtonTapCommand}"/>
+        </Grid>
+
+        <!-- POST -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="Auto, *"
+              Padding="{DynamicResource HorizontalIndent}">
+
+            <!-- PROFILE ICON -->
+            <Frame Grid.Column="0"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Start"
+                   CornerRadius="12"
+                   IsClippedToBounds="True"
+                   Padding="0"
+                   Scale="1.2"
+                   Margin="0,8,0,0"
+                   HeightRequest="24"
+                   WidthRequest="24"
+                   HasShadow="False">
+
+                <Image x:Name="leftButton"
+                       Source="{Binding ProfileIcon}"
+                       Aspect="AspectFill"/>
+            </Frame>
+
+            <ScrollView Grid.Column="1">
+                <StackLayout VerticalOptions="StartAndExpand"
+                             Margin="7,0,0,0">
+
+
+                    <!-- EDITOR -->
+                    <addpost:FocusedEditor Text="{Binding EditorText}"
+                                           Placeholder="{Binding TextResources[StartWriting]}"
+                                           PlaceholderColor="{DynamicResource DarkGray}"
+                                           TextColor="{DynamicResource Black}"
+                                           FontFamily="Ubuntu400"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           AutoSize="TextChanges"
+                                           MaxLength="300"
+                                           SecondTextColor="{DynamicResource ErrorColor}"
+                                           SpanIndex="250"
+                                           BackgroundColor="Transparent"/>
+
+
+                    <!--MEDIA CONTAINER-->
+                    <statecontainer:StateContainer State="{Binding AddMediaState}" 
+                                                   HorizontalOptions="FillAndExpand">
+
+                        <!--PHOTO -->
+                        <statecontainer:StateCondition Is="Image">
+                            <StackLayout>
+
+                                <FlexLayout BindableLayout.ItemsSource="{Binding MediaCollection}"
+                                            x:Name="Flex"
+                                            Wrap="Wrap">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="6,0,0,6"
+                                                  HeightRequest="56"
+                                                  WidthRequest="56"
+                                                  x:DataType="models_media:MediaSourceViewModel">
+
+                                                <Frame CornerRadius="3"
+                                                       IsClippedToBounds="True"
+                                                       Padding="0"
+                                                       HasShadow="False"
+                                                       HeightRequest="48"
+                                                       WidthRequest="48"
+                                                       VerticalOptions="End"
+                                                       HorizontalOptions="Start">
+
+                                                    <ff:CachedImage Source="{Binding MediaSource}"
+                                                                    Aspect="AspectFill"/>
+                                                </Frame>
+                                                <controls:ClickableContentView Command="{Binding Path=BindingContext.DeleteImageTapCommand, Source={x:Reference Flex}}"
+                                                                               CommandParameter="{Binding .}"               
+                                                             HorizontalOptions="End"
+                                                             VerticalOptions="Start">
+
+                                                <Image Source="ic_clear_filled.png"
+                                                             />
+                                                </controls:ClickableContentView>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </FlexLayout>
+                            </StackLayout>
+                        </statecontainer:StateCondition>
+
+                        <!-- VIDEO -->
+                        <statecontainer:StateCondition Is="Video">
+                            <StackLayout>
+
+                                <StackLayout Orientation="Horizontal" Padding="0" Margin="0">
+
+                                    <Image Source="ic_video_blue.png"
+                                           VerticalOptions="CenterAndExpand"
+                                           BackgroundColor="Transparent"/>
+
+                                    <Label Text="{Binding TextResources[Video]}"
+                                           FontFamily="Ubuntu500"
+                                           VerticalOptions="CenterAndExpand"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           TextColor="{DynamicResource PrimaryColor}"/>
+
+                                    <controls:ClickableContentView VerticalOptions="CenterAndExpand"
+                                                 Command="{Binding VideoDeleteTapCommand}">
+
+                                    <Image Source="ic_clear_filled.png"
+                                                 />
+                                    </controls:ClickableContentView>
+
+                                </StackLayout>
+                            </StackLayout>
+                        </statecontainer:StateCondition>
+
+                        <!-- CLEAR -->
+                        <statecontainer:StateCondition Is="None">
+
+                        </statecontainer:StateCondition>
+
+                    </statecontainer:StateContainer>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+
+
+        <!-- ADD MEDIA -->
+        <StackLayout Grid.Row="2"
+                     VerticalOptions="End">
+
+            <BoxView Color="{DynamicResource LightGray}" 
+                     HeightRequest="1" 
+                     VerticalOptions="End"
+                     HorizontalOptions="FillAndExpand"/>
+
+            <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal"
+                  Padding="{DynamicResource Indent}">
+
+                <!--ADD IMAGE-->
+                <controls:ClickableContentView Command="{Binding AddImageTapCommand}" HorizontalOptions="Start">
+
+                <Image Source="{Binding PhotoImage}"
+                             Scale="1.2"
+                             BackgroundColor="Transparent"
+                             IsEnabled="{Binding IsEnabledImageButton}"/>
+                </controls:ClickableContentView>
+
+                <!--ADD VIDEO-->
+                <controls:ClickableContentView Command="{Binding AddVideoTapCommand}" HorizontalOptions="Start">
+
+                <Image Source="{Binding VideoImage}"
+                             BackgroundColor="Transparent"
+                             Margin="{DynamicResource HorizontalIndent}"
+                             Scale="1.2"
+                             IsEnabled="{Binding IsEnabledVideoButton}"
+                             />
+                </controls:ClickableContentView>
+
+
+                <!--TEXT LIMITER-->
+                <StackLayout HorizontalOptions="EndAndExpand">
+
+                <controls:ClickableContentView Command="{Binding SymbolsCounterTapCommand}" HorizontalOptions="End">
+                    <controls:ClickableContentView.Content>
+                        <Grid>
+                            <controls:SymbolsCounter BackColor="{DynamicResource Gray}"
+                                                     PrimaryColor="{DynamicResource PrimaryColor}"
+                                                     ErrorColor="{DynamicResource ErrorColor}"
+                                                     SymbolsCount="{Binding SymbolsCount}"
+                                                     MaxCount="{Binding MaxCount}"
+                                                     Margin="0"
+                                                     MinimumHeightRequest="28"
+                                                     MinimumWidthRequest="28"
+                                                     HeightRequest="28"
+                                                     WidthRequest="28"/>
+
+                            <Label Text="{Binding Count}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   FontSize="10"
+                                   FontFamily="Ubuntu400"
+                                   TextColor="{DynamicResource ErrorColor}"/>
+
+                        </Grid>
+                    </controls:ClickableContentView.Content>
+                </controls:ClickableContentView>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </controls:KeyboardView>
+</views:BaseContentPage>

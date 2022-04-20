@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:notifications="clr-namespace:InTwitter.Models.Notification"
+      xmlns:statecontainer="clr-namespace:InTwitter.Controls.StateContainer"
+      xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+      xmlns:entities="clr-namespace:InTwitter.Models"
+      x:Class="InTwitter.Views.Templates.NotificationTemplate"
+      Padding="0" Margin="0"
+      x:DataType="notifications:NotificationViewModel"
+      x:Name="nTemplate"
+      ColumnDefinitions="Auto, *"
+      ColumnSpacing="0"
+      RowDefinitions="1,*">
+
+    <!-- SEPARATOR -->
+    <BoxView Grid.ColumnSpan="2"
+             Grid.Row="0"
+             HeightRequest="1"
+             HorizontalOptions="FillAndExpand"
+             Color="{DynamicResource LightGray}"/>
+
+    <!-- ACTION IMAGE -->
+    <Image Grid.Column="0"
+           Grid.Row="1"
+           Source="{Binding TypeImageAction}"
+           VerticalOptions="Start"
+           HorizontalOptions="CenterAndExpand"
+           Margin="14,5"/>
+
+    <StackLayout Grid.Column="1"
+                 Grid.Row="1"
+                 Spacing="15"
+                 Padding="0,5,10,5">
+
+        <StackLayout Orientation="Horizontal"
+                     Spacing="10" 
+                     HorizontalOptions="FillAndExpand">
+
+            <Frame CornerRadius="10"
+                   Padding="0"
+                   WidthRequest="20"
+                   HeightRequest="20"
+                   IsClippedToBounds="True"
+                   HasShadow="False">
+
+                <!-- ICON IMAGE -->
+                <Image Source="{Binding User.IconSource}" 
+                   Aspect="AspectFill">
+
+                    <Image.GestureRecognizers>
+
+                        <TapGestureRecognizer Command="{Binding Source={x:Reference nTemplate}, Path=UserTapped}"
+                                              CommandParameter="{Binding User}"/>
+
+                    </Image.GestureRecognizers>
+
+                </Image>
+
+            </Frame>
+
+            <FlexLayout Wrap="Wrap"
+                        Direction="Column" 
+                        JustifyContent="Start" 
+                        AlignContent="Start" 
+                        AlignItems="Start" 
+                        HorizontalOptions="FillAndExpand">
+
+                <!-- USER NAME LABEL -->
+                <Label Text="{Binding User.Name}"
+                   FontFamily="Ubuntu500"
+                   FontAttributes="Bold"
+                   FontSize="{DynamicResource NormalFontSize}"
+                   TextColor="{DynamicResource Black}">
+
+                    <Label.GestureRecognizers>
+
+                        <TapGestureRecognizer Command="{Binding Source={x:Reference nTemplate}, Path=UserTapped}"
+                                              CommandParameter="{Binding User}"/>
+
+                    </Label.GestureRecognizers>
+
+                </Label>
+
+                <!-- ACTION TEXT LABEL -->
+                <Label Text="{Binding ActionText}" 
+                   Margin="10,0,0,0"
+                   FontFamily="Ubuntu400"
+                   FontSize="{DynamicResource NormalFontSize}"
+                   TextColor="{DynamicResource Black}">
+
+                    <Label.GestureRecognizers>
+
+                        <TapGestureRecognizer Command="{Binding Source={x:Reference nTemplate}, Path=TweetTapped}"
+                                              CommandParameter="{Binding Tweet}"/>
+
+                    </Label.GestureRecognizers>
+
+                </Label>
+
+            </FlexLayout>
+
+        </StackLayout>
+
+        <!-- BIT TWEET TEXT -->
+        <Label Text="{Binding Tweet.Text}"
+               LineBreakMode="TailTruncation"
+               MaxLines="1"
+               FontFamily="Ubuntu400"
+               FontSize="{DynamicResource NormalFontSize}"
+               TextColor="{DynamicResource DarkGray}">
+
+            <Label.GestureRecognizers>
+
+                <TapGestureRecognizer Command="{Binding Source={x:Reference nTemplate}, Path=TweetTapped}"
+                                              CommandParameter="{Binding Tweet}"/>
+
+            </Label.GestureRecognizers>
+
+        </Label>
+
+        <!-- MEDIA -->
+        <statecontainer:StateContainer State="{Binding MediaType}">
+
+            <!-- VIDEO -->
+            <statecontainer:StateCondition Is="Video">
+
+                <StackLayout Orientation="Horizontal">
+
+                    <StackLayout.GestureRecognizers>
+
+                        <TapGestureRecognizer Command="{Binding Source={x:Reference nTemplate},                                                       Path=ImageVideoTapped}"
+                                                  CommandParameter="{Binding Tweet}"/>
+
+                    </StackLayout.GestureRecognizers>
+
+                    <!-- VIDEO ICON -->
+                    <Image Source="ic_video_blue.png">
+
+                    </Image>
+
+                    <!-- VIDEO LABEL -->
+                    <Label Text="{Binding VideoText}"
+                           FontFamily="Ubuntu500"
+                           FontAttributes="Bold"
+                           FontSize="{DynamicResource NormalFontSize}"
+                           TextColor="{DynamicResource PrimaryColor}">
+
+                        <Label.GestureRecognizers>
+
+                            <TapGestureRecognizer Command="{Binding Source={x:Reference nTemplate},                                                       Path=ImageVideoTapped}"
+                                                  CommandParameter="{Binding Tweet}"/>
+
+                        </Label.GestureRecognizers>
+
+                    </Label>
+
+                </StackLayout>
+
+            </statecontainer:StateCondition>
+
+            <!-- IMAGE -->
+            <statecontainer:StateCondition Is="Image">
+
+                <FlexLayout x:Name="flex" 
+                            BindableLayout.ItemsSource="{Binding Tweet.MediaSources}"
+                            HorizontalOptions="FillAndExpand">
+
+                    <FlexLayout.GestureRecognizers>
+
+                        <TapGestureRecognizer Command="{Binding Source={x:Reference nTemplate}, Path=TweetTapped}"
+                                              CommandParameter="{Binding Tweet}"/>
+
+                    </FlexLayout.GestureRecognizers>
+
+                    <BindableLayout.ItemTemplate>
+
+                        <DataTemplate x:DataType="entities:MediaSourceViewModel">
+
+                            <Frame Padding="0"
+                                   IsClippedToBounds="True"
+                                   CornerRadius="2"
+                                   WidthRequest="50"
+                                   HeightRequest="50"
+                                   Margin="4"
+                                   HasShadow="False">
+
+                                <ff:CachedImage Source="{Binding Path=MediaSource}"
+                                                Aspect="AspectFill"/>
+
+                            </Frame>
+
+                        </DataTemplate>
+
+                    </BindableLayout.ItemTemplate>
+
+                </FlexLayout>
+
+            </statecontainer:StateCondition>
+
+            <!-- GIF -->
+            <statecontainer:StateCondition Is="Gif">
+
+                <Image Source="ic_gif.png"
+                       HorizontalOptions="Start"
+                       Scale="1.2">
+
+                    <Image.GestureRecognizers>
+
+                        <TapGestureRecognizer Command="{Binding Source={x:Reference nTemplate}, Path=TweetTapped}"
+                                              CommandParameter="{Binding Tweet}"/>
+
+                    </Image.GestureRecognizers>
+
+                </Image>
+
+            </statecontainer:StateCondition>
+
+        </statecontainer:StateContainer>
+
+    </StackLayout>
+
+</Grid>

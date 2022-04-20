@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InTwitter.Resources.Styles.Values">
+
+
+    <OnPlatform x:TypeArguments="Thickness" x:Key="HorizontalIndent">
+        <On Platform="iOS"     Value="20 ,0, 20 ,0"/>
+        <On Platform="Android" Value="20 ,0, 20 ,0"/>
+    </OnPlatform>
+
+    <OnPlatform x:TypeArguments="Thickness" x:Key="VerticalIndent">
+        <On Platform="iOS"     Value="0, 12 ,0, 12"/>
+        <On Platform="Android" Value="0, 12 ,0, 12"/>
+    </OnPlatform>
+
+
+    <OnPlatform x:TypeArguments="Thickness" x:Key="LeftIndent">
+        <On Platform="iOS"     Value="12 ,0,0,0"/>
+        <On Platform="Android" Value="12 ,0,0,0"/>
+    </OnPlatform>
+
+    <OnPlatform x:TypeArguments="Thickness" x:Key="RightIndent">
+        <On Platform="iOS"     Value="0,0, 12 ,0"/>
+        <On Platform="Android" Value="0,0, 12 ,0"/>
+    </OnPlatform>
+    
+    <OnPlatform x:TypeArguments="Thickness" x:Key="Indent">
+        <On Platform="iOS"     Value="18,12,18,12"/>
+        <On Platform="Android" Value="18,12,18,12"/>
+    </OnPlatform>
+
+    <OnPlatform x:TypeArguments="Thickness" x:Key="VerticalIndentContentSignUpPage">
+        <On Platform="iOS" Value="0,60,0,0"/>
+        <On Platform="Android" Value="0,30,0,0"/>
+    </OnPlatform>
+
+    <OnPlatform x:TypeArguments="x:Double" x:Key="SpacingStackLayoutSignUpPage">
+        <On Platform="iOS" Value="50"/>
+    </OnPlatform>
+
+    <OnPlatform x:TypeArguments="Thickness" x:Key="VerticalIndentButtonsSignUpPage">
+        <On Platform="iOS" Value="0,50,0,0"/>
+        <On Platform="Android" Value="0,30,0,0"/>
+    </OnPlatform>
+
+    <OnPlatform x:TypeArguments="x:Double" x:Key="SpacingStackLayoutEditProfilePage">
+        <On Platform="iOS" Value="50"/>
+        <On Platform="Android" Value="13"/>
+    </OnPlatform>
+
+    <OnPlatform x:TypeArguments="Thickness" x:Key="VerticalIndentStackLayoutEditProfilePage">
+        <On Platform="iOS" Value="0,50,0,0"/>
+        <On Platform="Android" Value="0,13,0,0"/>
+    </OnPlatform>
+
+</ResourceDictionary>

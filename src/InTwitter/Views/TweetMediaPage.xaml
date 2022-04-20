@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage  xmlns:views="clr-namespace:InTwitter.Views"
+                        xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:prism="http://prismlibrary.com" 
+                        xmlns:controls="clr-namespace:InTwitter.Controls"
+                        xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+                        xmlns:controls_tweet="clr-namespace:InTwitter.Controls.Tweet"
+                        xmlns:viewmodels="clr-namespace:InTwitter.ViewModels"
+                        prism:ViewModelLocator.AutowireViewModel="True"
+                        x:Class="InTwitter.Views.TweetMediaPage"
+                        NavigationPage.HasNavigationBar="False"
+                        BackgroundColor="{DynamicResource Black}"
+                        x:DataType="viewmodels:TweetMediaPageViewModel">
+
+    <Grid RowDefinitions="150,*" 
+          VerticalOptions="FillAndExpand" 
+          HorizontalOptions="FillAndExpand">
+
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding OnPageTapCommand}"/>
+        </Grid.GestureRecognizers>
+
+        <StackLayout Grid.Row="0" Grid.RowSpan="2" VerticalOptions="Center">
+
+            <!--CAROUSEL-->
+            <controls_tweet:ImagedCarouselView ItemsSource="{Binding Path=Tweet.MediaSources}" 
+                                               Position="{Binding CarouselPosition}" 
+                                               Loop="False"
+                                               HeightRequest="250"
+                                               IsScrollAnimated="False"
+                                               VerticalOptions="Start"/>
+
+            <!--FOOTER-->
+            <StackLayout Padding="{DynamicResource HorizontalIndent}"
+                     Orientation="Horizontal">
+
+                <!--POSITION-->
+                <Label Text="{Binding CarouselFormatedPosition}"
+                       FontSize="{DynamicResource SmallFontSize}"
+                       TextColor="{DynamicResource White}"
+                       FontFamily="Ubuntu400"
+                       VerticalOptions="Center"
+                       HorizontalOptions="StartAndExpand"/>
+
+                <!--LIKES-->
+                <controls:ClickableContentView Command="{Binding Path=LikeTappedCommand}"
+                                               SelectedScale="1.1" 
+                                               Padding="5">
+
+                    <controls:LikeControl IsLiked="{Binding Path=Tweet.IsUserLiked}"
+                                          LikesAmount="{Binding Path=Tweet.LikesAmount}"  
+                                          NormalStyle="{DynamicResource tweetMediaPageLikeStyle}"
+                                          CheckedImageSource="ic_like_blue.png"
+                                          UncheckedImageSource="ic_like_white.png"
+                                          ActivatedStyle="{DynamicResource tweetLikeActivateStyle}"/>
+                </controls:ClickableContentView>
+
+                <!--MARK-->
+                <controls:ClickableContentView Command="{Binding Path=MarkTappedCommand}"
+                                               SelectedScale="1.1" 
+                                               Padding="5">
+
+                    <controls:ImageCheckBox BackgroundColor="{DynamicResource Black}"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="End"
+                                            Scale="1.2"
+                                            CheckedImageSource="ic_bookmarks_blue.png"
+                                            UncheckedImageSource="ic_bookmarks_white.png"
+                                            IsChecked="{Binding Path=Tweet.IsUserMarked, Mode=TwoWay}"/>
+                </controls:ClickableContentView>
+            </StackLayout>
+
+        </StackLayout>
+        
+        <BoxView Color="{DynamicResource Black}" HorizontalOptions="FillAndExpand" VerticalOptions="Start" HeightRequest="50"/>
+
+        <!--NAVBAR-->
+        <StackLayout Orientation="Horizontal" Padding="20,10,15,10" HorizontalOptions="FillAndExpand" VerticalOptions="Start" Grid.Row="0">
+
+            <!--BACK BUTTON-->
+            <controls:ClickableContentView Command="{prism:GoBack}">
+
+            <Image Source="ic_left_white.png"
+                         
+                         HorizontalOptions="StartAndExpand"
+                         VerticalOptions="Start"
+                         Scale="1.2"
+                         BackgroundColor="{DynamicResource Black}"/>
+            </controls:ClickableContentView>
+
+            <!--DROPDOWMN-->
+            <Grid RowDefinitions="*"
+                  Grid.Row="0"
+                  HorizontalOptions="EndAndExpand"
+                  VerticalOptions="Start">
+                <controls:ClickableContentView Command="{Binding OnDetailTapCommand}" VerticalOptions="Start">
+                    <Image Source="ic_hidden_menu_white.png"
+                       Grid.Row="0"
+                       HorizontalOptions="EndAndExpand"
+                       Scale="1.2"
+                       VerticalOptions="Start"/>
+                </controls:ClickableContentView>
+
+                <Frame CornerRadius="5" 
+                       BackgroundColor="{DynamicResource DarkGray}"
+                       Padding="0"
+                       Margin="0" 
+                       Grid.Row="0"
+                       VerticalOptions="Start"
+                       IsClippedToBounds="True"
+                       IsVisible="{Binding IsDropDownExpanded}">
+                    <StackLayout Spacing="0" Padding="0">
+                        
+                        <!--SAVE-->
+                        <Label Text="Save"
+                               Padding="12,20,120,10"
+                               BackgroundColor="{DynamicResource DarkGray}"
+                               FontSize="{DynamicResource SmallFontSize}"
+                               FontFamily="Ubuntu400"
+                               TextColor="{DynamicResource White}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SaveImageCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <!--SHARE-->
+                        <Label Text="Share"
+                               Padding="12,10,120,20"
+                                BackgroundColor="{DynamicResource DarkGray}"
+                                FontSize="{DynamicResource SmallFontSize}"
+                                FontFamily="Ubuntu400"
+                                TextColor="{DynamicResource White}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShareImageCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+        </StackLayout>
+    </Grid>
+</views:BaseContentPage>

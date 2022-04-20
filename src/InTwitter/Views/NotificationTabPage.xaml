@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseTabPage xmlns:views="clr-namespace:InTwitter.Views" 
+                   xmlns="http://xamarin.com/schemas/2014/forms"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:prism="http://prismlibrary.com"
+                   prism:ViewModelLocator.AutowireViewModel="True"
+                   NavigationPage.HasNavigationBar="False"
+                   xmlns:templates="clr-namespace:InTwitter.Views.Templates"
+                   xmlns:viewmodels="clr-namespace:InTwitter.ViewModels"
+                   xmlns:controls="clr-namespace:InTwitter.Controls" 
+                    xmlns:entities="clr-namespace:InTwitter.Models.Notification"
+                   x:Class="InTwitter.Views.NotificationTabPage"
+                   Style="{DynamicResource pageStyle}"
+                   x:DataType="viewmodels:NotificationTabPageViewModel"
+                   x:Name="notificationPage">
+
+    <Grid RowDefinitions="Auto, *"
+          Padding="0">
+        
+        <!-- NAVBAR -->
+        <StackLayout Padding="0">
+
+            <Grid ColumnDefinitions="*"
+              Padding="{DynamicResource Indent}">
+
+                <!-- LABEL TITLE PAGE -->
+                <Label Text="{Binding TextResources[Notification]}"
+                   TextColor="{DynamicResource Black}"
+                   FontFamily="Ubuntu500"
+                   FontSize="{DynamicResource LargeFontSize}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
+
+            </Grid>
+
+            <!-- SEPARATOR -->
+            <BoxView HeightRequest="1"
+                     Color="{DynamicResource LightGray}"
+                     VerticalOptions="End"
+                     IsVisible="{Binding SeparatorVisibility}"/>
+            
+        </StackLayout>
+
+        <controls:FeedView Grid.Row="1"
+                           ItemSource="{Binding Notifications}"
+                           OnFinishedScrollCommand="{Binding FinishedScrollCommand}"
+                           ScrollPosition="{Binding ScrollPosition}">
+
+            <controls:FeedView.DataTemplate>
+
+                <DataTemplate x:DataType="entities:NotificationViewModel">
+
+                    <templates:NotificationTemplate ImageVideoTapped="{Binding Source={x:Reference notificationPage}, Path=BindingContext.VideoLinkTapped}"
+                                                    TweetTapped="{Binding Source={x:Reference notificationPage},Path=BindingContext.TweetTapped}"
+                                                    UserTapped="{Binding Source={x:Reference notificationPage},Path=BindingContext.UserTapped}"/>
+                    
+                </DataTemplate>
+                
+            </controls:FeedView.DataTemplate>
+            
+        </controls:FeedView>
+
+    </Grid>
+
+</views:BaseTabPage>

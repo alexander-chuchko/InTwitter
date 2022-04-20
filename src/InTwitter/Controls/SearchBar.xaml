@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:controls="clr-namespace:InTwitter.Controls"
+       xmlns:state="clr-namespace:InTwitter.Controls.StateContainer"
+       xmlns:prism="http://prismlibrary.com"
+       x:Class="InTwitter.Controls.SearchBar"
+       x:Name="searchBar"
+       HasShadow="False">
+
+    <StackLayout Orientation="Horizontal" Padding="{DynamicResource HorizontalIndent}" Spacing="0">
+        <Frame HasShadow="False"
+                       CornerRadius="15"
+                       HeightRequest="30"
+                       WidthRequest="30"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center" 
+                       IsClippedToBounds="True"
+                       Padding="0" Margin="0,0,15,0">
+            <state:StateContainer State="{Binding State, Source={Reference searchBar}}">
+                <state:StateContainer.Conditions>
+                    <state:StateCondition Is="Icon">
+                        <controls:ClickableContentView Command="{Binding UserTapCommand, Source={Reference searchBar}}">
+                            <Image Aspect="AspectFill"
+                                   Source="{Binding UserIcon, Source={Reference searchBar}}"/>
+                        </controls:ClickableContentView>
+                    </state:StateCondition>
+                    <state:StateCondition Is="Back">
+                        <controls:ClickableContentView Command="{Binding OnClearButtonTapped, Source={Reference searchBar}}">
+                            <Image Aspect="AspectFill" 
+                                   Source="ic_left_gray.png"/>
+                        </controls:ClickableContentView>
+                    </state:StateCondition>
+                </state:StateContainer.Conditions>
+            </state:StateContainer>
+
+        </Frame>
+        <Frame CornerRadius="18"
+               IsClippedToBounds="True" 
+               HasShadow="False"
+               BackgroundColor="{DynamicResource LightGray}"
+               HorizontalOptions="FillAndExpand">
+            <Frame.Padding>
+                <OnPlatform x:TypeArguments="Thickness">
+                    <On Platform="iOS" Value="20,10,0,10"/>
+                    <On Platform="Android" Value="10,0,0,0"/>
+                </OnPlatform>
+            </Frame.Padding>
+            <Entry Placeholder="{Binding PlaceholderText, Source={Reference searchBar}}"
+                   Text="{Binding Path=SearchField, Source={Reference searchBar}, Mode=TwoWay}"
+                   Completed="Entry_Completed"
+                   Unfocused="Entry_Unfocused"
+                   Style="{DynamicResource searchEntryStyle}"/>
+        </Frame>
+    </StackLayout>
+</Frame>

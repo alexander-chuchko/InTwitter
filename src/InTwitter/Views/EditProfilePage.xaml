@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage xmlns:views="clr-namespace:InTwitter.Views"
+                       xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:controls="clr-namespace:InTwitter.Controls"
+                       xmlns:controlsEntry="clr-namespace:InTwitter.Controls.FloatingEntry"
+                       x:Class="InTwitter.Views.EditProfilePage"
+                       NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Content>
+
+        <ScrollView>
+
+            <StackLayout>
+
+                <StackLayout.GestureRecognizers>
+
+                    <TapGestureRecognizer Command="{Binding OutsideTapCommand}"/>
+
+                </StackLayout.GestureRecognizers>
+
+                <!--NAVBAR-->
+                <controls:MainNavBar LeftImage="ic_left_blue.png"
+                                     LeftImageTapCommand="{Binding GoBackTapCommand}"
+                                     Title="{Binding TextResources[ChangeProfile]}"
+                                     RightImage="ic_check_blue.png"
+                                     RightImageTapCommand="{Binding SavePropfileTapCommand}"/>
+
+                <!--PROFILE CUSTOMIZATION-->
+                <Grid RowDefinitions="*"
+                      HeightRequest="158">
+
+                    <!--PROFILE WALLPAPER-->
+                    <Grid RowDefinitions="126, *">
+
+                        <Grid RowDefinitions="*">
+
+                            <Image Source="{Binding WallPaper}"
+                                   HorizontalOptions="FillAndExpand"
+                                   Aspect="AspectFill"/>
+
+                            <StackLayout BackgroundColor="{DynamicResource Black}"
+                                         Opacity="0.6"/>
+
+                            <controls:ClickableContentView WidthRequest="60"
+                                                           HeightRequest="60"
+                                                           HorizontalOptions="Center"
+                                                           VerticalOptions="Center"
+                                                           Command="{Binding ChangeWallpaperTapCommand}">
+
+                                <controls:ClickableContentView.Content>
+
+                                    <Frame CornerRadius="30"
+                                           BackgroundColor="{DynamicResource Black}"
+                                           HasShadow="False"
+                                           IsClippedToBounds="True"
+                                           Padding="15">
+
+                                        <Image Source="ic_add_photo.png"/>
+
+                                    </Frame>
+
+                                </controls:ClickableContentView.Content>
+
+                            </controls:ClickableContentView>
+
+                        </Grid>
+
+                    </Grid>
+
+                    <!--PROFILE AVATAR-->
+                    <controls:ClickableContentView WidthRequest="64"
+                                                   HeightRequest="64"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="End"
+                                                   Padding="13, 0"
+                                                   Command="{Binding ChangeIconTapCommand}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Frame CornerRadius="32"
+                                   BackgroundColor="{DynamicResource White}"
+                                   Padding="0"
+                                   IsClippedToBounds="True"
+                                   HasShadow="False">
+
+                                <Grid RowDefinitions="*">
+
+                                    <Image Source="{Binding Icon}"
+                                           Aspect="AspectFill"/>
+
+                                    <BoxView BackgroundColor="{DynamicResource Black}"
+                                             Opacity="0.6"
+                                             CornerRadius="32"/>
+
+                                    <ImageButton BackgroundColor="Transparent"
+                                                 Source="ic_add_photo.png"
+                                                 CornerRadius="32"
+                                                 BorderWidth="2"
+                                                 BorderColor="{DynamicResource White}"
+                                                 Padding="17"
+                                                 IsEnabled="False"/>
+
+                                </Grid>
+
+                            </Frame>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                </Grid>
+
+                <!--ENTRIES-->
+                <StackLayout Padding="0, 13, 0, 0">
+
+                    <StackLayout Spacing="{DynamicResource SpacingStackLayoutEditProfilePage}" 
+                                 Padding="{DynamicResource HorizontalIndent}">
+
+                        <!--NAME-->
+                        <controlsEntry:CustomFloatingEntry EntryFocused="{Binding EntryNameFocused}"
+                                                           LabelFontFamily="Ubuntu400"
+                                                           LabelFontSize="{DynamicResource SmallFontSize}"
+                                                           LabelTextColor="{DynamicResource PrimaryColor}"
+                                                           LabelText="{Binding TextResources[Name]}"
+                                                           EntryFontFamily="Ubuntu400"
+                                                           EntryFontSize="{DynamicResource AccentFontSize}"
+                                                           EntryTextColor="{DynamicResource Black}"
+                                                           BoxViewColor="{DynamicResource LightGray}"
+                                                           IsClearImageEnabled="False"
+                                                           EntryText="{Binding Name}"
+                                                           ErrorFontFamily="Ubuntu400"
+                                                           ErrorFontSize="{DynamicResource SmallFontSize}"
+                                                           ErrorTextColor="{DynamicResource ErrorColor}"
+                                                           ErrorText="{Binding NameError}"/>
+
+                        <!--EMAIL-->
+                        <controlsEntry:CustomFloatingEntry LabelFontFamily="Ubuntu400"
+                                                           LabelFontSize="{DynamicResource SmallFontSize}"
+                                                           LabelTextColor="{DynamicResource PrimaryColor}"
+                                                           LabelText="{Binding TextResources[Email]}"
+                                                           EntryFontFamily="Ubuntu400"
+                                                           EntryFontSize="{DynamicResource AccentFontSize}"
+                                                           EntryTextColor="{DynamicResource Black}"
+                                                           BoxViewColor="{DynamicResource LightGray}"
+                                                           IsClearImageEnabled="False"
+                                                           EntryText="{Binding Email}"
+                                                           ErrorFontFamily="Ubuntu400"
+                                                           ErrorTextColor="{DynamicResource ErrorColor}"
+                                                           ErrorText="{Binding EmailError}"/>
+
+                        <!--OLD PASSWORD-->
+                        <controlsEntry:CustomFloatingEntry EntryFocused="{Binding EntryOldPasswordFocused}"
+                                                           LabelFontFamily="Ubuntu400"
+                                                           LabelFontSize="{DynamicResource SmallFontSize}"
+                                                           LabelTextColor="{DynamicResource PrimaryColor}"
+                                                           LabelText="{Binding TextResources[OldPassword]}"
+                                                           EntryFontFamily="Ubuntu400"
+                                                           EntryFontSize="{DynamicResource AccentFontSize}"
+                                                           EntryTextColor="{DynamicResource Black}"
+                                                           BoxViewColor="{DynamicResource LightGray}"
+                                                           IsClearImageEnabled="False"
+                                                           IsPassword="True"
+                                                           EntryText="{Binding OldPassword}"
+                                                           ErrorFontFamily="Ubuntu400"
+                                                           ErrorFontSize="{DynamicResource SmallFontSize}"
+                                                           ErrorTextColor="{DynamicResource ErrorColor}"
+                                                           ErrorText="{Binding OldPasswordError}"/>
+
+                        <!--NEW PASSWORD-->
+                        <controlsEntry:CustomFloatingEntry EntryFocused="{Binding EntryNewPasswordFocused}"
+                                                           LabelFontFamily="Ubuntu400"
+                                                           LabelFontSize="{DynamicResource SmallFontSize}"
+                                                           LabelTextColor="{DynamicResource PrimaryColor}"
+                                                           LabelText="{Binding TextResources[NewPassword]}"
+                                                           EntryFontFamily="Ubuntu400"
+                                                           EntryFontSize="{DynamicResource AccentFontSize}"
+                                                           EntryTextColor="{DynamicResource Black}"
+                                                           BoxViewColor="{DynamicResource LightGray}"
+                                                           IsClearImageEnabled="False"
+                                                           IsPassword="True"
+                                                           EntryText="{Binding NewPassword}"
+                                                           ErrorFontFamily="Ubuntu400"
+                                                           ErrorFontSize="{DynamicResource SmallFontSize}"
+                                                           ErrorTextColor="{DynamicResource ErrorColor}"
+                                                           ErrorText="{Binding NewPasswordError}"/>
+
+                    </StackLayout>
+
+                </StackLayout>
+                
+            </StackLayout>
+
+        </ScrollView>
+
+    </ContentPage.Content>
+
+</views:BaseContentPage>

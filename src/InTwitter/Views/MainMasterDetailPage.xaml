@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:prism="http://prismlibrary.com"
+                  prism:ViewModelLocator.AutowireViewModel="True"
+                  x:Class="InTwitter.Views.MainMasterDetailPage"
+                  NavigationPage.HasNavigationBar="False"
+                  xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                  xmlns:controls="clr-namespace:InTwitter.Controls" 
+                  xmlns:viewmodels="clr-namespace:InTwitter.ViewModels"
+                  ios:Page.UseSafeArea="true"
+                  x:DataType="viewmodels:MainMasterDetailPageViewModel"
+                  IsPresented="{Binding IsMasterPagePresented, Mode=TwoWay}"
+                  IsGestureEnabled="{Binding IsMasterPageGestureEnabled, Mode=TwoWay}">
+
+    <MasterDetailPage.Master>
+
+        <ContentPage Title="Menu"
+                     ios:Page.UseSafeArea="true">
+
+            <StackLayout>
+
+                <!--PROFILE INFO-->
+                <StackLayout Orientation="Horizontal"
+                             Padding="15, 26, 0, 28"
+                             Spacing="20">
+
+                    <!--AVATAR-->
+                    <controls:ClickableContentView HeightRequest="40"
+                                                   WidthRequest="40"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="Center"
+                                                   Command="{Binding OpenProfileTapCommand}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Frame HeightRequest="40"
+                                   WidthRequest="40"
+                                   CornerRadius="20"
+                                   BackgroundColor="Transparent"
+                                   IsClippedToBounds="True"
+                                   HasShadow="False"
+                                   Padding="0">
+
+                                <Image Source="{Binding Icon}"
+                                       Aspect="AspectFill"/>
+
+                            </Frame>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                    <StackLayout Spacing="0">
+
+                        <!--NAME-->
+                        <Label FontFamily="Ubuntu700"
+                               FontSize="{DynamicResource AccentFontSize}"
+                               TextColor="{DynamicResource Black}"
+                               Text="{Binding Name}"/>
+
+                        <!--EMAIL-->
+                        <Label FontFamily="Ubuntu400"
+                               FontSize="{DynamicResource SmallFontSize}"
+                               TextColor="{DynamicResource DarkGray}"
+                               Text="{Binding Email}"/>
+
+                    </StackLayout>
+
+                </StackLayout>
+
+                <!--BUTTONS-->
+                <StackLayout Padding="0, 0, 0, 15"
+                             Spacing="9"
+                             VerticalOptions="FillAndExpand">
+
+                    <!--HOME-->
+                    <controls:CheckedButton Icon="ic_home_blue.png"
+                                            CheckedIcon="ic_home_blue.png"
+                                            UncheckedIcon="ic_home_gray.png"
+                                            FontFamily="Ubuntu400"
+                                            FontSize="{DynamicResource SmallFontSize}"
+                                            TextColor="{DynamicResource PrimaryColor}"
+                                            CheckedTextColor="{DynamicResource PrimaryColor}"
+                                            UncheckedTextColor="{DynamicResource Black}"
+                                            Text="{Binding TextResources[Home]}"
+                                            IsChecked="{Binding IsHomeChecked}"
+                                            Margin="3, 0, 0, 0"
+                                            TapCommand="{Binding OpenHomeTabTapCommand}"/>
+
+                    <!--SEARCH-->
+                    <controls:CheckedButton Icon="ic_search_gray.png"
+                                            CheckedIcon="ic_search_blue.png"
+                                            UncheckedIcon="ic_search_gray.png"
+                                            FontFamily="Ubuntu400"
+                                            FontSize="{DynamicResource SmallFontSize}"
+                                            TextColor="{DynamicResource Black}"
+                                            CheckedTextColor="{DynamicResource PrimaryColor}"
+                                            UncheckedTextColor="{DynamicResource Black}"
+                                            Text="{Binding TextResources[Search]}"
+                                            IsChecked="{Binding IsSearchChecked}"
+                                            Margin="3, 0, 0, 0"
+                                            TapCommand="{Binding OpenSearchTabTapCommand}"/>
+
+                    <!--NOTIFICATION-->
+                    <controls:CheckedButton Icon="ic_notifications_gray.png"
+                                            CheckedIcon="ic_notifications_blue.png"
+                                            UncheckedIcon="ic_notifications_gray.png"
+                                            FontFamily="Ubuntu400"
+                                            FontSize="{DynamicResource SmallFontSize}"
+                                            TextColor="{DynamicResource Black}"
+                                            CheckedTextColor="{DynamicResource PrimaryColor}"
+                                            UncheckedTextColor="{DynamicResource Black}"
+                                            Text="{Binding TextResources[Notifications]}"
+                                            IsChecked="{Binding IsNotificationChecked}"
+                                            Margin="3, 0, 0, 0"
+                                            TapCommand="{Binding OpenNotificationTabTapCommand}"/>
+
+                    <!--BOOKMARKS-->
+                    <controls:CheckedButton Icon="ic_bookmarks_gray.png"
+                                            CheckedIcon="ic_bookmarks_blue.png"
+                                            UncheckedIcon="ic_bookmarks_gray.png"
+                                            FontFamily="Ubuntu400"
+                                            FontSize="{DynamicResource SmallFontSize}"
+                                            TextColor="{DynamicResource Black}"
+                                            CheckedTextColor="{DynamicResource PrimaryColor}"
+                                            UncheckedTextColor="{DynamicResource Black}"
+                                            Text="{Binding TextResources[Bookmarks]}"
+                                            IsChecked="{Binding IsBookmarksChecked}"
+                                            Margin="3, 0, 0, 0"
+                                            TapCommand="{Binding OpenBookmarksTabTapCommand}"/>
+
+                    <!--SEPARATOR-->
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{DynamicResource LightGray}"
+                             Margin="0, 0, 0, 3"/>
+
+                    <!--CHANGE PROFILE-->
+                    <controls:ClickableContentView Command="{Binding EditProfileTapCommand}">
+
+                        <controls:ClickableContentView.Content>
+
+                            <Frame Padding="12"
+                                   HasShadow="False"
+                                   BackgroundColor="Transparent"
+                                   Margin="3, 0, 0, 0">
+
+                                <StackLayout Orientation="Horizontal"
+                                             Spacing="12">
+
+                                    <Image Source="ic_setting.png"
+                                           Scale="1.2"/>
+                                       
+                                    <Label FontFamily="Ubuntu400"
+                                           FontSize="{DynamicResource SmallFontSize}"
+                                           TextColor="{DynamicResource Black}"
+                                           Text="{Binding TextResources[ChangeProfile]}"
+                                           VerticalOptions="Center"/>
+
+                                </StackLayout>
+
+                            </Frame>
+
+                        </controls:ClickableContentView.Content>
+
+                    </controls:ClickableContentView>
+
+                    <!--LOGOUT-->
+                    <controls:ClickableContentView VerticalOptions="EndAndExpand"
+                                                   Command="{Binding LogoutProfileTapCommand}">
+
+                        <Frame Padding="12"
+                               HasShadow="False"
+                               BackgroundColor="Transparent"
+                               Margin="3, 0, 0, 0">
+
+                            <StackLayout Orientation="Horizontal"
+                                         Spacing="12">
+
+                                <Image Source="ic_logout_blue.png"
+                                       Scale="1.2"/>
+
+                                <Label FontFamily="Ubuntu400"
+                                       FontSize="{DynamicResource SmallFontSize}"
+                                       TextColor="{DynamicResource PrimaryColor}"
+                                       Text="{Binding TextResources[Logout]}"
+                                       VerticalOptions="Center"/>
+
+                            </StackLayout>
+
+                        </Frame>
+
+                    </controls:ClickableContentView>
+
+                </StackLayout>
+
+            </StackLayout>
+
+        </ContentPage>
+
+    </MasterDetailPage.Master>
+
+</MasterDetailPage>

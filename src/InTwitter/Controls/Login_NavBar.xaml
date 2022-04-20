@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InTwitter.Controls.Login_NavBar"
+             x:Name="lnb">
+
+    <Grid RowDefinitions="Auto,Auto">
+        
+        <Grid>
+            
+            <!-- IMAGE ARROW BACK -->
+            <Image Source="ic_left_blue.png"
+                   HorizontalOptions="Start"
+                   VerticalOptions="StartAndExpand"
+                   Margin="10" Scale="1.1"
+                   IsVisible="{Binding IsBackVisible, Source={x:Reference lnb}}">
+                
+
+                <Image.GestureRecognizers>
+
+                    <TapGestureRecognizer Command="{Binding ArrowBackTapped, Source={x:Reference lnb}}"/>
+
+                </Image.GestureRecognizers>
+                
+            </Image>
+
+            <!-- IMAGE BIRD -->
+            <Image HorizontalOptions="Center">
+
+                <Image.Source>
+
+                    <OnPlatform x:TypeArguments="ImageSource"
+                                iOS="pic_logo_small.png"
+                                Android="pic_logo_small2x.png"/>
+                </Image.Source>
+
+                <Image.Scale>
+
+                    <OnPlatform x:TypeArguments="x:Double"
+                                iOS="1.2"
+                                Android="0.6"/>
+
+                </Image.Scale>
+                
+            </Image>
+            
+        </Grid>
+        
+        <!-- LABEL TITLE PAGE -->
+        <Label Grid.Row="1"
+               Text="{Binding TitlePage, Source={x:Reference lnb}}"
+               TextColor="{Binding TitlePageColor, Source={x:Reference lnb}}"
+               FontSize="{Binding TitlePageFontSize, Source={x:Reference lnb}}"
+               FontFamily="{Binding TitlePageFontFamily, Source={x:Reference lnb}}"
+               HorizontalOptions="Center"
+               VerticalOptions="Start">
+
+            <Label.Margin>
+
+                <OnPlatform x:TypeArguments="Thickness"
+                            iOS="0,10,0,0"/>
+                
+            </Label.Margin>
+            
+        </Label>
+        
+    </Grid>
+
+</ContentView>

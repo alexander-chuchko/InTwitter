@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="InTwitter.Controls.MediaContainer"
+             x:Name="container"
+             HasShadow="False"
+             Padding="0" 
+             CornerRadius="5"
+             IsClippedToBounds="True">
+
+    <Frame.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding  Path=TapCommand, Source={x:Reference container}}"/>
+    </Frame.GestureRecognizers>
+
+    <Grid x:Name="gridContainer" RowDefinitions="*">
+        <ff:CachedImage Grid.Row="0"
+               Aspect="AspectFill"
+               HorizontalOptions="FillAndExpand"
+               Finish="CachedImage_Finish"
+               Source="{Binding  Path=Source, Source={x:Reference container}}"/>
+        <Frame x:Name="labelImageFrame"
+               Grid.Row="0"
+               HasShadow="False" 
+               IsClippedToBounds="True"
+               BackgroundColor="Transparent"
+               Padding="4">
+            <Image x:Name="labelImage"/>
+        </Frame>
+
+        <ActivityIndicator x:Name="loadingIndicator"
+                           IsRunning="{Binding IsLoading, Source={Reference container}}"
+                           Grid.Row="0"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Color="{DynamicResource PrimaryColor}">
+        </ActivityIndicator>
+    </Grid>
+</Frame>

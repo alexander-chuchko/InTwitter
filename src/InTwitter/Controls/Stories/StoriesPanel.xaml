@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:InTwitter.Controls.Stories"
+             x:Class="InTwitter.Controls.Stories.StoriesPanel"
+             xmlns:behaviors="clr-namespace:InTwitter.Behaviors"
+             xmlns:constants="clr-namespace:InTwitter"
+             x:Name="storiesPanel">
+
+    <StackLayout Spacing="0"
+                 HeightRequest="108"
+                 BackgroundColor="Transparent"
+                 VerticalOptions="Center">
+
+        <BoxView HeightRequest="1"
+                 HorizontalOptions="FillAndExpand" 
+                 Color="{DynamicResource LightGray}"/>
+
+        <ScrollView Orientation="Horizontal"
+                    HorizontalScrollBarVisibility="Never">
+
+            <StackLayout x:Name="collectionStoriesList"
+                         Orientation="Horizontal"
+                         BindingContext="{x:Reference storiesPanel}"
+                         BindableLayout.ItemsSource = "{Binding UserStoriesList, Mode=TwoWay}">
+
+                <BindableLayout.ItemTemplate>
+
+                    <DataTemplate>
+
+                        <Grid HorizontalOptions="Center"
+                              VerticalOptions="Center"
+                              HeightRequest="90"
+                              Padding="20,14,20,5"
+                              x:Name="gridIconUser">
+
+                            <Grid.GestureRecognizers>
+
+                                <TapGestureRecognizer NumberOfTapsRequired="1"                          
+                                                      Command="{Binding TapUserStoryCommand, Source={x:Reference storiesPanel}}"
+                                                      CommandParameter="{Binding .}"/>
+
+                            </Grid.GestureRecognizers>
+
+                            <!-- Avatar of user  -->
+                            
+                            <Frame BackgroundColor="{Binding OutlineСolor}"
+                                   Padding="3"
+                                   WidthRequest="48"
+                                   HeightRequest="48"
+                                   CornerRadius="28"
+                                   HasShadow="False"
+                                   VerticalOptions="Start"
+                                   HorizontalOptions="Center"
+                                   IsClippedToBounds="True"
+                                   IsVisible="true">
+
+                                <Frame  WidthRequest="48"
+                                        HeightRequest="48" 
+                                        CornerRadius="28"
+                                        Padding="0"
+                                        VerticalOptions="Start"
+                                        HorizontalOptions="Center"
+                                        HasShadow="False">
+
+                                    <ImageButton x:Name="imageButton"
+                                                         Source="{Binding UserIcon}"
+                                                         Aspect="AspectFill"
+                                                         WidthRequest="48"
+                                                         HeightRequest="48"
+                                                         CornerRadius="24"
+                                                         BorderColor="{DynamicResource White}"
+                                                         BackgroundColor="Transparent"
+                                                         BorderWidth="2"
+                                                         IsEnabled="False"
+                                                         Command="{Binding UserStoryTapCommand, Mode=TwoWay}">
+
+                                    </ImageButton>
+
+                                </Frame>
+
+                            </Frame>
+
+                            <!-- Button for adding -->
+                            
+                            <ImageButton x:Name="imagePlus"
+                                                 WidthRequest="26"
+                                                 HeightRequest="26" 
+                                                 CornerRadius="13"
+                                                 TranslationX="16"
+                                                 TranslationY="32"
+                                                 BorderColor="{DynamicResource White}"
+                                                 BorderWidth="2"
+                                                 Source="ic_add_blue_small.png"
+                                                 Aspect="AspectFill"
+                                                 Padding="0"
+                                                 VerticalOptions="Start" 
+                                                 HorizontalOptions="Center"
+                                                 IsVisible="False">
+
+                                <ImageButton.Triggers>
+
+                                    <MultiTrigger TargetType="ImageButton">
+
+                                        <MultiTrigger.Conditions>
+
+                                            <BindingCondition Binding="{Binding IsLoaded}" Value="False"/>
+                                            <BindingCondition Binding="{Binding IsAuthorized}" Value="True"/>
+
+                                        </MultiTrigger.Conditions>
+
+                                        <Setter Property="IsVisible" Value="True"/>
+
+                                    </MultiTrigger>
+
+                                </ImageButton.Triggers>
+
+                            </ImageButton>
+
+                            <!--Name of User-->
+                            
+                            <controls:CustomLabel Text="{Binding Name}"  
+                                                  FontSize="Body"
+                                                  VerticalOptions="End"
+                                                  HorizontalOptions="Center"
+                                                  TextColor="{DynamicResource Black}">
+
+                                <Label.Behaviors>
+
+                                    <behaviors:LabelLengthValidatorBehavior MaxLength="{x:Static constants:Constants.NUMBER_OF_CHARACTERS_IN_THE_NAME}"/>
+
+                                </Label.Behaviors>
+
+                            </controls:CustomLabel>
+
+                        </Grid>
+
+                    </DataTemplate>
+
+                </BindableLayout.ItemTemplate>
+
+            </StackLayout>
+            
+        </ScrollView>
+        
+    </StackLayout>
+
+</ContentView>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ExtendedTabbedPage xmlns:controls="clr-namespace:InTwitter.Controls" xmlns="http://xamarin.com/schemas/2014/forms"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                             xmlns:prism="http://prismlibrary.com" xmlns:tabs="clr-namespace:InTwitter.Views"
+                             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core" xmlns:behaviors="clr-namespace:InTwitter.Behaviors"
+                             prism:ViewModelLocator.AutowireViewModel="True"
+                             x:Class="InTwitter.Views.MainTabbedPage"
+                             NavigationPage.HasNavigationBar="False"
+                             android:TabbedPage.ToolbarPlacement="Bottom"
+                             android:TabbedPage.IsSwipePagingEnabled="False"
+                             SelectedTabColor="{DynamicResource PrimaryColor}"
+                             UnselectedTabColor="{DynamicResource DarkGray}"
+                             ChosenTab="{Binding ChosenTab}">
+
+    <TabbedPage.Behaviors>
+
+        <behaviors:TabbedPageNavigationBehavior/>
+
+    </TabbedPage.Behaviors>
+
+    <TabbedPage.Children>
+
+        <tabs:HomeTabPage SelectedTabIcon="ic_home_blue.png" 
+                          UnselectedTabIcon="ic_home_gray.png" 
+                          IconImageSource="ic_home_gray.png"/>
+
+        <tabs:SearchTabPage SelectedTabIcon="ic_search_blue.png" 
+                            UnselectedTabIcon="ic_search_gray.png" 
+                            IconImageSource="ic_search_gray.png"/>
+
+        <tabs:NotificationTabPage SelectedTabIcon="ic_notifications_blue.png" 
+                                  UnselectedTabIcon="ic_notifications_gray.png" 
+                                  IconImageSource="ic_notifications_gray.png"/>
+
+        <tabs:BookmarksTabPage SelectedTabIcon="ic_bookmarks_blue.png" 
+                               UnselectedTabIcon="ic_bookmarks_gray.png" 
+                               IconImageSource="ic_bookmarks_gray.png"/>
+
+    </TabbedPage.Children>
+  
+</controls:ExtendedTabbedPage>

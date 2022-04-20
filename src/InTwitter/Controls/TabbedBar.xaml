@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:controls="clr-namespace:InTwitter.Controls"
+             x:Class="InTwitter.Controls.TabbedBar"
+             x:Name="tabbedBar">
+
+    <StackLayout Orientation="Horizontal"
+                 Spacing="38"
+                 Padding="23, 0">
+
+        <Label FontFamily="{Binding TabFont, Source={x:Reference tabbedBar}}"
+               FontSize="{Binding TabFontSize, Source={x:Reference tabbedBar}}"
+               TextColor="{Binding FirstTabColor, Source={x:Reference tabbedBar}}"
+               Text="{Binding FirstTabText, Source={x:Reference tabbedBar}}">
+
+            <Label.GestureRecognizers>
+
+                <TapGestureRecognizer Command="{Binding SelectFirstTabCommand, Source={x:Reference tabbedBar}}"/>
+
+            </Label.GestureRecognizers>
+
+        </Label>
+
+        <Label FontFamily="{Binding TabFont, Source={x:Reference tabbedBar}}"
+               FontSize="{Binding TabFontSize, Source={x:Reference tabbedBar}}"
+               TextColor="{Binding SecondTabColor, Source={x:Reference tabbedBar}}"
+               Text="{Binding SecondTabText, Source={x:Reference tabbedBar}}">
+
+            <Label.GestureRecognizers>
+
+                <TapGestureRecognizer Command="{Binding SelectSecondTabCommand, Source={x:Reference tabbedBar}}"/>
+
+            </Label.GestureRecognizers>
+
+        </Label>
+
+    </StackLayout>
+
+    <Grid RowDefinitions="*">
+
+        <BoxView HeightRequest="1"
+                 BackgroundColor="{DynamicResource LightGray}"
+                 VerticalOptions="End"/>
+
+        <BoxView HeightRequest="1"
+                 WidthRequest="73"
+                 BackgroundColor="{Binding SelectedTabColor, Source={x:Reference tabbedBar}}"
+                 HorizontalOptions="Start"
+                 VerticalOptions="End"
+                 Margin="{Binding SeparatorMagrin, Source={x:Reference tabbedBar}}"/>
+
+    </Grid>
+
+</StackLayout>
